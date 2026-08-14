@@ -1,15 +1,20 @@
-# Portrait을 다시 쓴다. 사람이 명령을 돌려야 갱신되는 문서라면 "주시하고 있다"는
-# 컨셉이 그 순간 거짓이 되므로, 기록이 커밋될 때와 하루 한 번 저절로 돈다.
+# 관찰자의 두 문서를 갱신한다. 사람이 명령을 돌려야 갱신되는 문서라면
+# "주시하고 있다"는 컨셉이 그 순간 거짓이 되므로, 기록이 커밋될 때와 하루 한 번
+# 저절로 돈다.
 #
-# 판정 자체는 `pnpm portrait`이 하고 여기서는 그것을 돌려 달라진 것만 커밋한다.
+# Portrait은 앞의 판정을 지우고 다시 쓰고 Arc는 뒤에 붙기만 한다. 판정 자체는
+# `pnpm portrait`과 `pnpm arc`가 하고 여기서는 그것을 돌려 달라진 것만 커밋한다.
 # 동사 게이트에 걸리면 명령이 실패하므로(ADR-0005) 커밋 단계까지 오지 않는다.
-name: Portrait
+#
+# 둘을 한 워크플로에 두는 것은 같은 브랜치에 밀어 넣기 때문이다. 따로 두면 Note
+# 하나가 커밋될 때마다 두 벌이 동시에 깨어나 서로의 푸시에 부딪친다.
+name: 관찰자
 
 on:
   push:
     branches: [main]
-    # Note와 Trail이 커밋될 때만 돈다. Portrait 자신이 커밋돼도 다시 돌지 않으니
-    # 이 워크플로가 자기 커밋으로 스스로를 부르는 고리가 없다.
+    # Note와 Trail이 커밋될 때만 돈다. 관찰자 자신의 커밋이 올라와도 다시 돌지
+    # 않으니 이 워크플로가 자기 커밋으로 스스로를 부르는 고리가 없다.
     paths:
       - notes/**
       - trails/**
@@ -20,7 +25,7 @@ on:
 
 # 두 벌이 겹쳐 돌면 늦게 끝난 쪽이 상대의 판정 위에 자기 것을 밀어 넣는다.
 concurrency:
-  group: portrait
+  group: observer
   cancel-in-progress: false
 
 jobs:
@@ -29,8 +34,9 @@ jobs:
     permissions:
       contents: write
     # 모델 호출이 멎어도 러너를 오래 붙잡지 않는다. CLI 쪽에도 제한이 있지만
-    # 그 밖에서 멈추는 경우까지 여기서 닫는다.
-    timeout-minutes: 10
+    # 그 밖에서 멈추는 경우까지 여기서 닫는다. Arc는 새로 들어온 Note마다 한 번씩
+    # 부르므로 Portrait 한 번보다 창이 넓어야 한다.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
 
@@ -67,22 +73,33 @@ jobs:
             echo "::warning file=portrait.md::모델의 문장이 감사를 통과하지 못해 조립 판정으로 되돌렸다"
           fi
 
+      # Arc는 앞의 내용을 지우지 않는다 (ADR-0010). 씨앗이 없으면 이 단계가
+      # 실패하는데, 씨앗은 사람이 쓰는 문장이므로 여기서 만들어 주지 않는다.
+      - name: Arc를 길게 한다
+        run: pnpm arc
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+      # 한 문서가 걸려도 다른 문서의 갱신은 커밋한다. Arc의 게이트는 사람이
+      # 손볼 때까지 걸린 채로 있을 수 있고(ADR-0010), 그동안 Portrait까지 멈추면
+      # 걸린 문서 하나가 관찰자 전체를 세운다. 실패 자체는 그대로 실패로 남는다.
       - name: 달라진 것이 있으면 커밋한다
+        if: always()
         run: |
-          if git diff --quiet -- portrait.md; then
-            echo "판정이 그대로다 — 커밋하지 않는다."
+          if git diff --quiet -- portrait.md arc.md; then
+            echo "판정도 자취도 그대로다 — 커밋하지 않는다."
             exit 0
           fi
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add portrait.md
-          git commit -m "chore: Portrait 갱신"
+          git add portrait.md arc.md
+          git commit -m "chore: 관찰자 갱신"
 
           # checkout한 뒤 사람이 먼저 푸시했으면 그 위에 다시 얹는다. 얹지
-          # 못하면 이번 갱신을 접는다 — Portrait은 매번 통째로 다시 쓰이므로
-          # 다음 실행이 같은 판정을 다시 만든다. 한 번 놓친 것을 붙잡으려고
-          # 남의 커밋 위에 강제로 밀어 넣을 이유가 없다.
+          # 못하면 이번 갱신을 접는다 — Portrait은 매번 통째로 다시 쓰이고 Arc는
+          # 도장이 움직이지 않았으므로, 다음 실행이 같은 자리를 다시 만든다.
+          # 한 번 놓친 것을 붙잡으려고 남의 커밋 위에 강제로 밀어 넣을 이유가 없다.
           git fetch origin "$GITHUB_REF_NAME"
           if ! git rebase "origin/$GITHUB_REF_NAME"; then
             git rebase --abort
