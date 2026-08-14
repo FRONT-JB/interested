@@ -24,6 +24,7 @@ export function auditProse({
     ...formatReasons(prose),
     ...verbReasons(prose),
     ...numberReasons({ prose, brief }),
+    ...countReasons({ prose, brief }),
     ...nameReasons({ prose, brief }),
   ];
 
@@ -89,6 +90,31 @@ function numberReasons({ prose, brief }: { prose: string; brief: PortraitBrief }
 
 function digitsIn(text: string): string[] {
   return [...text.matchAll(/\d+/gu)].map(([digits]) => digits.replace(/^0+(?=\d)/u, ""));
+}
+
+/**
+ * 수와 단위를 붙여 한 번 더 견준다. 숫자만 보면 `1편 70회`를 재료로 둔 채
+ * `70편`이라고 쓴 산문이 통과한다 — 70도 편도 재료에 있기 때문이다. 세는
+ * 대상이 바뀐 문장은 숫자를 지어낸 것과 다르지 않다.
+ *
+ * 재료가 쓴 단위를 그대로 쓰게 만드는 부작용이 있다. `1편`을 `1개`로 바꿔 쓰면
+ * 되돌려지는데, 뜻이 같아도 관찰자의 문서가 같은 것을 매번 다른 단위로 세는
+ * 편보다 낫다.
+ */
+const countPattern = /(\d+)\s*(편|회|주|개|번|위|자)/gu;
+
+function countReasons({ prose, brief }: { prose: string; brief: PortraitBrief }): string[] {
+  const known = new Set(countsIn(brief.facts.join(" ")));
+
+  return [...new Set(countsIn(prose))]
+    .filter((count) => !known.has(count))
+    .map((count) => `재료에 없는 수 — ${count}`);
+}
+
+function countsIn(text: string): string[] {
+  return [...text.matchAll(countPattern)].map(
+    ([, digits, unit]) => `${(digits ?? "").replace(/^0+(?=\d)/u, "")}${unit}`,
+  );
 }
 
 /**

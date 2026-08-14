@@ -40,6 +40,21 @@ describe("auditProse", () => {
     expect(verdict.outcome === "rejected" && verdict.reasons.join(" ")).toContain("12");
   });
 
+  it("재료에 있는 수를 다른 것을 세는 데 쓰면 되돌린다", () => {
+    // 9와 편이 각각 재료에 있으니 숫자만 보면 통과한다. 세는 대상이 바뀐 것은
+    // 숫자를 지어낸 것과 다르지 않다.
+    const verdict = auditProse({ prose: `${good}\n\n그 저장소에는 Note가 9편 있다.`, brief });
+
+    expect(verdict.outcome).toBe("rejected");
+    expect(verdict.outcome === "rejected" && verdict.reasons.join(" ")).toContain("9편");
+  });
+
+  it("재료에 있는 수와 단위는 그대로 통과한다", () => {
+    const verdict = auditProse({ prose: `${good}\n\n푸시는 9회였다.`, brief });
+
+    expect(verdict).toEqual({ outcome: "pass" });
+  });
+
   it("재료에 없는 이름을 만들면 되돌린다", () => {
     const verdict = auditProse({ prose: `${good}\n\n\`octocat/없는것\`에도 푸시가 갔다.`, brief });
 

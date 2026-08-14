@@ -32,11 +32,11 @@ jobs:
     # 그 밖에서 멈추는 경우까지 여기서 닫는다.
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: pnpm
@@ -58,6 +58,14 @@ jobs:
           # `claude setup-token`으로 받은 구독 토큰. 없으면 모델을 부르지 못해
           # 조립 판정으로 되돌아가고, 갱신 자체는 그대로 돌아간다.
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+      # 조립으로 되돌아간 것은 실패가 아니지만 조용히 지나가서는 안 된다.
+      # 모델이 매일 걸리고 있는데 아무도 모르는 상태가 가장 나쁘다.
+      - name: 조립으로 되돌아갔으면 눈에 띄게 남긴다
+        run: |
+          if grep -q '^prose: template$' portrait.md; then
+            echo "::warning file=portrait.md::모델의 문장이 감사를 통과하지 못해 조립 판정으로 되돌렸다"
+          fi
 
       - name: 달라진 것이 있으면 커밋한다
         run: |

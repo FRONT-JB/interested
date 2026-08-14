@@ -62,4 +62,4 @@ Note 본문과 Portrait 문장 자체는 모델 호출이라 산문을 검증할
 
 ## 상태
 
-Note 형식이 고정됐고 그것을 지키는 Note가 한 편 있다. Concept은 아직 하나도 승격되지 않았고 Trail도 없다 — [ADR-0002](./docs/adr/0002-concept-promotion-at-three.md)대로 정상 상태다. Portrait은 Note나 Trail이 커밋될 때와 하루 한 번 저절로 다시 쓰인다. 관찰자가 쓴 문장에 금지 동사가 들어가면 그 실행은 파일을 쓰지 않고 실패한다. 웹은 Trail이 네 번 발행된 뒤에 만든다 — 실물 없이 설계하면 추측이 되므로.
+Note 형식이 고정됐고 그것을 지키는 Note가 한 편 있다. Concept은 아직 하나도 승격되지 않았고 Trail도 없다 — [ADR-0002](./docs/adr/0002-concept-promotion-at-three.md)대로 정상 상태다. Portrait은 Note나 Trail이 커밋될 때와 하루 한 번 저절로 다시 쓰인다. 모델의 문장이 감사에 걸리면 조립 판정으로 되돌아가므로 갱신이 멈추지는 않고, 되돌아갔다는 사실은 파일의 `prose: template`에 남는다. 웹은 Trail이 네 번 발행된 뒤에 만든다 — 실물 없이 설계하면 추측이 되므로.
