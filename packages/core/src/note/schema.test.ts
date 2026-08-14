@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { noteFrontmatterSchema } from "./schema";
+import { noteFrontmatterSchema } from "./schema.ts";
 
 const validFrontmatter = {
   source: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",

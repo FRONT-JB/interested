@@ -6,6 +6,7 @@
   "scripts": {
     "test": "pnpm --recursive --if-present test",
     "typecheck": "pnpm --recursive --if-present typecheck",
+    "concepts": "node packages/core/src/cli/concepts.ts",
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev"
   }
