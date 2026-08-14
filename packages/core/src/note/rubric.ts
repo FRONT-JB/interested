@@ -12,6 +12,11 @@ export type NoteDraft = {
   concepts: string[];
   /** 원문이 무슨 말을 하는지. 짧게 가리키는 데 그친다 (ADR-0003). */
   sourceClaim: string;
+  /**
+   * 원문의 뼈대를 5~7덩어리로 묶은 것. 각 1~2문장이다 (ADR-0009). 사람의 답이
+   * 아니라 기계가 원문에서 뽑은 것이라 관점 세 자리와 성격이 다르다.
+   */
+  sourceOutline: string[];
   /** "여기서 뭐가 새로웠나"에 대한 답. */
   harvest: string;
   /** "어디에 쓸 생각인가"에 대한 답. */
@@ -25,7 +30,7 @@ export type NoteDraft = {
  * 않았을 때의 `concepts`다. 형식을 고치는 것과 이름을 새로 정하는 것은 다른
  * 일이라, 후자는 기계가 하지 않는다 (ADR-0001).
  */
-export type AskBackField = "take" | PerspectiveField | "concepts";
+export type AskBackField = "take" | PerspectiveField | "concepts" | "sourceOutline";
 
 /** 스킬이 던진 세 질문에 사람이 답한 자리. 글이 들어가므로 길이로 잴 수 있다. */
 type PerspectiveField = "harvest" | "application" | "doubt";
@@ -36,6 +41,7 @@ export type CorrectionField =
   | "take"
   | "concepts"
   | "sourceClaim"
+  | "sourceOutline"
   | "harvest"
   | "application"
   | "doubt";
@@ -92,6 +98,9 @@ export function judgeDraft({
     title: correctStyle(draft.title, "title", corrections),
     take: correctStyle(draft.take, "take", corrections),
     sourceClaim: correctStyle(draft.sourceClaim, "sourceClaim", corrections),
+    sourceOutline: draft.sourceOutline.map((chunk) =>
+      correctStyle(chunk, "sourceOutline", corrections),
+    ),
     harvest: correctStyle(draft.harvest, "harvest", corrections),
     application: correctStyle(draft.application, "application", corrections),
     doubt: correctStyle(draft.doubt, "doubt", corrections),
@@ -180,6 +189,25 @@ function collectAskBacks(draft: NoteDraft): AskBack[] {
     question: "믿기지 않는 대목은 — 원문이 너무 쉽게 넘어갔다고 느낀 곳이 어디였나.",
   });
 
+  if (draft.sourceOutline.length > maximumOutlineChunks) {
+    askBack.push({
+      field: "sourceOutline",
+      reason: `원문 정리가 ${String(draft.sourceOutline.length)}덩어리다 — ${String(maximumOutlineChunks)}덩어리를 넘겼다`,
+      question: `원문 정리를 ${String(maximumOutlineChunks)}덩어리 이하로 줄여야 관점이 본문의 중심으로 남는다. 어느 덩어리끼리 합칠지 정해 달라.`,
+    });
+  }
+
+  // 관점이 얇다는 판정이 이미 붙었으면 균형은 다시 묻지 않는다. 같은 자리를
+  // 두 문장으로 물으면 사람이 무엇을 고쳐야 하는지가 흐려진다.
+  if (askBack.length === 0 && !perspectiveHoldsMajority(draft)) {
+    askBack.push({
+      field: "harvest",
+      reason: "원문 정리가 관점보다 길다 — 본문의 대부분은 관점이어야 한다 (ADR-0009)",
+      question:
+        "원문 요약이 관점보다 길어졌다. 요약을 줄이는 대신, 이 Source가 네 생각을 어디서 어떻게 움직였는지 더 짚어 달라.",
+    });
+  }
+
   return askBack;
 }
 
@@ -203,6 +231,32 @@ function addPerspectiveAskBack(
       question,
     });
   }
+}
+
+/**
+ * 원문 정리가 이보다 많은 덩어리로 갈리면 Note가 관점이 아니라 요약으로 읽힌다
+ * (ADR-0009). 아래쪽은 막지 않는다 — 짧은 원문을 세 덩어리로 묶는 것은 맞는
+ * 일이고, 최소치를 두면 기계가 덩어리를 늘리려고 없는 말을 채우게 된다.
+ */
+const maximumOutlineChunks = 7;
+
+/**
+ * 관점 세 자리의 합이 원문 쪽(도입부 + 정리)보다 길어야 본문의 대부분이
+ * 관점이라고 본다. ADR-0009가 ADR-0003의 분량 제한을 푸는 대신 걸어 둔 조건이
+ * 이것이라, 여기가 무너지면 Note가 번역 요약으로 읽히기 시작한다.
+ *
+ * 글자 수로 재는 것은 조악하다. 짧고 밀도 높은 관점이 걸릴 수 있고, 길게 늘여
+ * 쓴 빈 말은 통과한다. 관점을 재는 다른 문턱들과 같은 한계이며, 최종 판단은
+ * 이 함수가 아니라 스킬 대화에서 사람과 에이전트가 한다.
+ */
+function perspectiveHoldsMajority(draft: NoteDraft): boolean {
+  const perspective =
+    compactLength(draft.harvest) + compactLength(draft.application) + compactLength(draft.doubt);
+  const source =
+    compactLength(draft.sourceClaim) +
+    draft.sourceOutline.reduce((total, chunk) => total + compactLength(chunk), 0);
+
+  return perspective > source;
 }
 
 function compactLength(text: string): number {

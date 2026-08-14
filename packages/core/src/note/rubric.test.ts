@@ -12,6 +12,12 @@ function draft(overrides: Partial<NoteDraft> = {}): NoteDraft {
     take: "인자가 많다는 것이 아니라 같은 인자 묶음이 여러 함수로 퍼진다는 것이 객체로 묶을 신호였다.",
     concepts: ["parameter-object-pattern", "stamp-coupling"],
     sourceClaim: "원문은 함수 인자가 많아질 때 관련 값을 하나의 객체로 묶으라고 말한다.",
+    sourceOutline: [
+      "인자가 셋을 넘는 함수를 예로 든다.",
+      "같은 묶음이 여러 함수에 반복되는 자리를 짚는다.",
+      "객체로 묶은 뒤의 호출부를 견줘 보인다.",
+      "묶지 말아야 할 경우를 하나 든다.",
+    ],
     harvest:
       "내가 건진 것은 그 결론이 아니라 언제 묶을지 판별하는 기준이다. 인자 개수는 신호가 아니었고, 거의 같은 묶음을 서너 군데가 반복해서 받기 시작할 때가 묶을 때다.",
     application:
@@ -110,6 +116,61 @@ describe("judgeDraft — 재료 부족은 되묻는다", () => {
     const verdict = judge({ harvest: "좋은 내용이었다." });
 
     expect(verdict.outcome === "ask-back" && verdict.askBack[0]?.question.length).toBeGreaterThan(0);
+  });
+});
+
+describe("judgeDraft — 원문과 관점의 균형 (ADR-0009)", () => {
+  it("원문 정리가 일곱 덩어리를 넘으면 되묻는다", () => {
+    const verdict = judge({
+      sourceOutline: Array.from({ length: 8 }, (_unused, index) => `${String(index)}번째 대목이다.`),
+    });
+
+    expect(verdict.outcome === "ask-back" && verdict.askBack.map(({ field }) => field)).toContain(
+      "sourceOutline",
+    );
+  });
+
+  it("일곱 덩어리까지는 통과한다", () => {
+    const verdict = judge({
+      sourceOutline: Array.from({ length: 7 }, (_unused, index) => `${String(index)}번째.`),
+    });
+
+    expect(verdict.outcome).toBe("pass");
+  });
+
+  it("덩어리 수가 적어도 되묻지 않는다 — 최소치를 두면 없는 말을 채우게 된다", () => {
+    expect(judge({ sourceOutline: ["원문은 한 가지만 말한다."] }).outcome).toBe("pass");
+  });
+
+  it("원문 정리가 관점보다 길면 되묻는다", () => {
+    const verdict = judge({
+      sourceOutline: [
+        "원문은 인자가 셋을 넘는 함수를 길게 예로 들며 호출부가 어떻게 읽히는지 하나씩 짚는다.",
+        "같은 인자 묶음이 여러 함수로 번지는 과정을 단계별로 보이고 그때마다 바뀌는 시그니처를 나열한다.",
+        "객체로 묶은 뒤의 호출부를 앞의 것과 나란히 놓고 무엇이 짧아졌는지 하나하나 견준다.",
+        "이름 붙은 속성이 생기면서 호출부에서 인자 순서를 기억할 일이 사라진다는 점을 반복해 강조한다.",
+        "타입을 붙였을 때 편집기가 무엇을 채워 주는지 화면을 띄워 보이며 설명한다.",
+        "마지막으로 묶지 말아야 할 경우를 들며 응집도가 없는 값을 억지로 모으면 생기는 문제를 설명한다.",
+      ],
+    });
+
+    expect(verdict.outcome === "ask-back" && verdict.askBack[0]?.reason).toContain("관점보다 길다");
+  });
+
+  it("관점이 이미 얇다고 걸렸으면 균형은 다시 묻지 않는다", () => {
+    const verdict = judge({ harvest: "좋았다.", application: "쓴다.", doubt: "없다." });
+    const reasons =
+      verdict.outcome === "ask-back" ? verdict.askBack.map(({ reason }) => reason).join(" ") : "";
+
+    expect(reasons).not.toContain("관점보다 길다");
+  });
+
+  it("원문 정리의 경어체도 말없이 고친다", () => {
+    const verdict = judge({ sourceOutline: ["원문은 인자를 묶으라고 말합니다."] });
+
+    expect(verdict.outcome === "pass" && verdict.corrected.sourceOutline[0]).toBe(
+      "원문은 인자를 묶으라고 말한다.",
+    );
   });
 });
 
