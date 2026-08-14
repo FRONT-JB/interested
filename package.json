@@ -1,0 +1,12 @@
+{
+  "name": "interested",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "test": "pnpm --recursive --if-present test",
+    "typecheck": "pnpm --recursive --if-present typecheck",
+    "build": "pnpm --filter web build",
+    "dev": "pnpm --filter web dev"
+  }
+}
