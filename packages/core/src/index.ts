@@ -1,3 +1,13 @@
+export { findDuplicateSource } from "./note/duplicate.ts";
+export { judgeDraft } from "./note/rubric.ts";
+export type {
+  AskBack,
+  AskBackField,
+  Correction,
+  CorrectionField,
+  NoteDraft,
+  RubricVerdict,
+} from "./note/rubric.ts";
 export { conceptSlugSchema, noteFrontmatterSchema } from "./note/schema.ts";
 export type { NoteFrontmatter } from "./note/schema.ts";
 export { readRepository } from "./repository/read.ts";
