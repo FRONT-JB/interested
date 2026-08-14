@@ -2,7 +2,7 @@
 source: https://youtu.be/43sDzyanzR0
 title: Parameter Object Pattern은 JavaScript/TypeScript에도 적용할 수 있는가
 date: 2026-07-08
-sentence: 인자가 많다는 것이 아니라 같은 인자 묶음이 여러 함수로 퍼진다는 것이 객체로 묶을 신호였다.
+take: 인자가 많다는 것이 아니라 같은 인자 묶음이 여러 함수로 퍼진다는 것이 객체로 묶을 신호였다.
 concepts:
   - parameter-object-pattern
   - stamp-coupling

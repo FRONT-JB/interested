@@ -6,12 +6,12 @@ const validFrontmatter = {
   source: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   title: "서버 컴포넌트가 지운 경계",
   date: "2026-08-14",
-  sentence: "데이터를 어디서 가져오느냐가 아니라 어디서 렌더하느냐가 경계였다.",
+  take: "데이터를 어디서 가져오느냐가 아니라 어디서 렌더하느냐가 경계였다.",
   concepts: ["rsc", "data-fetching"],
 };
 
 describe("noteFrontmatterSchema", () => {
-  it("Source·제목·작성일·한 문장·Concept이 갖춰진 frontmatter를 읽는다", () => {
+  it("Source·제목·작성일·Take·Concept이 갖춰진 frontmatter를 읽는다", () => {
     const result = noteFrontmatterSchema.safeParse(validFrontmatter);
 
     expect(result.success).toBe(true);
@@ -76,11 +76,11 @@ describe("noteFrontmatterSchema", () => {
     expect(result.success).toBe(true);
   });
 
-  it("제목이나 한 문장이 비어 있으면 거부한다", () => {
+  it("제목이나 Take가 비어 있으면 거부한다", () => {
     expect(noteFrontmatterSchema.safeParse({ ...validFrontmatter, title: "" }).success).toBe(false);
-    expect(
-      noteFrontmatterSchema.safeParse({ ...validFrontmatter, sentence: "   " }).success,
-    ).toBe(false);
+    expect(noteFrontmatterSchema.safeParse({ ...validFrontmatter, take: "   " }).success).toBe(
+      false,
+    );
   });
 
   it("작성일이 YYYY-MM-DD가 아니면 거부한다", () => {

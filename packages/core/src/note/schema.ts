@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * Note 한 편의 frontmatter. Source가 Note의 식별자이고, 한 문장은 원문의
+ * Note 한 편의 frontmatter. Source가 Note의 식별자이고, Take는 원문의
  * 주장이 아니라 내가 거기서 건진 것이다 (ADR-0003).
  */
 export type NoteFrontmatter = z.infer<typeof noteFrontmatterSchema>;
@@ -33,7 +33,7 @@ export const noteFrontmatterSchema = z.strictObject({
   source: z.url(),
   title: z.string().trim().min(1, "제목이 비어 있다"),
   date: noteDateSchema,
-  sentence: z.string().trim().min(1, "한 문장이 비어 있다"),
+  take: z.string().trim().min(1, "Take가 비어 있다"),
   concepts: z
     .array(conceptSlugSchema)
     .min(1, "Note는 Concept을 최소 하나 참조해야 한다")
