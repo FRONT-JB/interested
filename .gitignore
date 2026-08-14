@@ -3,3 +3,6 @@ node_modules/
 *.tsbuildinfo
 .env*
 __pycache__/
+
+# 스킬 개발용 작업물 — eval 산출물과 원문 사본이라 정본이 아니다
+.claude/skills/*-workspace/
