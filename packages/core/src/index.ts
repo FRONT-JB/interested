@@ -4,3 +4,7 @@ export { readRepository } from "./repository/read.ts";
 export type { ConceptTally, Note, RepositoryModel, UnreadableFile } from "./repository/read.ts";
 export { renderMarkdown, writeMarkdown } from "./repository/write.ts";
 export type { WriteOutcome } from "./repository/write.ts";
+export { renderTrailDraft } from "./trail/draft.ts";
+export { tallyWeek, tallyWeeks } from "./trail/tally.ts";
+export type { ConceptMovement, RankChange, WeekConceptTally, WeekTally } from "./trail/tally.ts";
+export { previousWeek, trailWeekSchema, weekOf, weekRange } from "./trail/week.ts";

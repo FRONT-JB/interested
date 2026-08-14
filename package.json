@@ -7,6 +7,7 @@
     "test": "pnpm --recursive --if-present test",
     "typecheck": "pnpm --recursive --if-present typecheck",
     "concepts": "node packages/core/src/cli/concepts.ts",
+    "trail": "node packages/core/src/cli/trail.ts",
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev"
   }
