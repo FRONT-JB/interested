@@ -1,3 +1,12 @@
+export { appendArcEntry, arcPath, readArcStamp, withoutQuotedLines } from "./arc/append.ts";
+export type { AppendOutcome, ArcStamp } from "./arc/append.ts";
+export { auditArcEntry } from "./arc/audit.ts";
+export { arcBrief, arcPrompt } from "./arc/brief.ts";
+export type { ArcBrief } from "./arc/brief.ts";
+export { selectArcEntries } from "./arc/entry.ts";
+export type { ArcConceptFact, ArcEntryFacts, ArcSelection } from "./arc/entry.ts";
+export { writeArcEntryProse } from "./arc/prose.ts";
+export { arcEntryLine, renderArcEntry } from "./arc/render.ts";
 export { conceptCountLine, conceptList } from "./concept/name.ts";
 export { findDuplicateSource } from "./note/duplicate.ts";
 export { judgeDraft } from "./note/rubric.ts";

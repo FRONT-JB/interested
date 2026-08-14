@@ -9,6 +9,7 @@
     "concepts": "node packages/core/src/cli/concepts.ts",
     "trail": "node packages/core/src/cli/trail.ts",
     "portrait": "node packages/core/src/cli/portrait.ts",
+    "arc": "node packages/core/src/cli/arc.ts",
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev"
   }
