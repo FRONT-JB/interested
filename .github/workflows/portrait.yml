@@ -1,0 +1,74 @@
+# Portrait을 다시 쓴다. 사람이 명령을 돌려야 갱신되는 문서라면 "주시하고 있다"는
+# 컨셉이 그 순간 거짓이 되므로, 기록이 커밋될 때와 하루 한 번 저절로 돈다.
+#
+# 판정 자체는 `pnpm portrait`이 하고 여기서는 그것을 돌려 달라진 것만 커밋한다.
+# 동사 게이트에 걸리면 명령이 실패하므로(ADR-0005) 커밋 단계까지 오지 않는다.
+name: Portrait
+
+on:
+  push:
+    branches: [main]
+    # Note와 Trail이 커밋될 때만 돈다. Portrait 자신이 커밋돼도 다시 돌지 않으니
+    # 이 워크플로가 자기 커밋으로 스스로를 부르는 고리가 없다.
+    paths:
+      - notes/**
+      - trails/**
+  schedule:
+    # 매일 06:00 KST. Note를 쓰지 않은 날에도 GitHub 활동은 달라진다.
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+# 두 벌이 겹쳐 돌면 늦게 끝난 쪽이 상대의 판정 위에 자기 것을 밀어 넣는다.
+concurrency:
+  group: portrait
+  cancel-in-progress: false
+
+jobs:
+  rewrite:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Portrait을 다시 쓴다
+        run: pnpm portrait
+        env:
+          PORTRAIT_GITHUB_LOGIN: ${{ github.repository_owner }}
+          # 공개 활동만 조회하므로 토큰은 세는 범위를 넓히려고 있는 게 아니라
+          # 조회 한도 때문에 있다. 조회가 막혀도 Note만으로 판정이 나온다.
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: 달라진 것이 있으면 커밋한다
+        run: |
+          if git diff --quiet -- portrait.md; then
+            echo "판정이 그대로다 — 커밋하지 않는다."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add portrait.md
+          git commit -m "chore: Portrait 갱신"
+
+          # checkout한 뒤 사람이 먼저 푸시했으면 그 위에 다시 얹는다. 얹지
+          # 못하면 이번 갱신을 접는다 — Portrait은 매번 통째로 다시 쓰이므로
+          # 다음 실행이 같은 판정을 다시 만든다. 한 번 놓친 것을 붙잡으려고
+          # 남의 커밋 위에 강제로 밀어 넣을 이유가 없다.
+          git fetch origin "$GITHUB_REF_NAME"
+          if ! git rebase "origin/$GITHUB_REF_NAME"; then
+            git rebase --abort
+            echo "그 사이 다른 커밋이 올라왔다 — 이번 갱신을 접는다."
+            exit 0
+          fi
+
+          git push

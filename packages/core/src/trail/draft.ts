@@ -1,3 +1,4 @@
+import { conceptCountLine, conceptList } from "../concept/name.ts";
 import { renderMarkdown } from "../repository/write.ts";
 import type { WeekTally } from "./tally.ts";
 
@@ -54,7 +55,7 @@ function renderCrowding({ concepts, dominant }: WeekTally): string[] {
     "",
     "## 몰린 곳",
     "",
-    ...concepts.map(({ concept, noteCount }) => `- \`${concept}\` ${noteCount}편`),
+    ...concepts.map(conceptCountLine),
     "",
     dominant.length === 1
       ? `이번 주는 ${conceptList(dominant)}에 가장 몰렸다.`
@@ -99,13 +100,3 @@ function renderNotes({ notes }: WeekTally): string[] {
   ];
 }
 
-/**
- * 나열은 쉼표로 잇는다. "와/과"로 이으면 셋 이상이 어색해지고, 앞말 받침에
- * 따라 둘이 갈리는데 Concept은 영어 slug라 발음으로 받침을 판정해야 한다.
- * 그 판정은 규칙으로 닫히지 않으므로 맞히려 들수록 틀리는 자리가 는다.
- * 쉼표로 두면 항목 뒤에 조사가 붙지 않아 문제 자체가 사라진다.
- */
-/** Concept 이름들을 코드 표기로 감싸 쉼표로 잇는다. 조사가 붙지 않는 형태다. */
-function conceptList(concepts: string[]): string {
-  return concepts.map((concept) => `\`${concept}\``).join(", ");
-}

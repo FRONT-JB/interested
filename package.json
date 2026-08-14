@@ -8,6 +8,7 @@
     "typecheck": "pnpm --recursive --if-present typecheck",
     "concepts": "node packages/core/src/cli/concepts.ts",
     "trail": "node packages/core/src/cli/trail.ts",
+    "portrait": "node packages/core/src/cli/portrait.ts",
     "build": "pnpm --filter web build",
     "dev": "pnpm --filter web dev"
   }

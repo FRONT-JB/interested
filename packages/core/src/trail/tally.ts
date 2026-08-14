@@ -41,7 +41,7 @@ export type WeekTally = {
  * 호출자가 `readRepository`의 결과를 넣어 준다. 집계가 표현과 갈려 있는
  * 이유는 나중에 표현까지 기계에 넘기더라도 이쪽은 그대로 두기 위해서다.
  */
-export function tallyWeek({ notes, week }: { notes: Note[]; week: string }): WeekTally {
+export function tallyWeek({ notes, week }: { notes: readonly Note[]; week: string }): WeekTally {
   const { start, end } = weekRange(week);
   const thisWeek = notesOf(notes, week);
   const concepts = rankConcepts(thisWeek);
@@ -65,14 +65,14 @@ export function tallyWeek({ notes, week }: { notes: Note[]; week: string }): Wee
 }
 
 /** Note가 한 편이라도 있는 주를 오래된 순으로. 비어 있는 주는 목록에 오르지 않는다. */
-export function tallyWeeks(notes: Note[]): WeekTally[] {
+export function tallyWeeks(notes: readonly Note[]): WeekTally[] {
   // 주 식별자는 자리 수가 고정이라 문자열 순서가 곧 시간 순서다.
   const weeks = [...new Set(notes.map(({ date }) => weekOf(date)))].sort();
 
   return weeks.map((week) => tallyWeek({ notes, week }));
 }
 
-function notesOf(notes: Note[], week: string): Note[] {
+function notesOf(notes: readonly Note[], week: string): Note[] {
   return notes.filter((note) => weekOf(note.date) === week);
 }
 
@@ -81,7 +81,7 @@ function notesOf(notes: Note[], week: string): Note[] {
  * 저장소 전체를 세는 곳과 한 주만 세는 곳이 같은 함수를 지나야 같은 Concept이
  * 화면마다 같은 자리에 놓인다.
  */
-function rankConcepts(notes: Note[]): WeekConceptTally[] {
+function rankConcepts(notes: readonly Note[]): WeekConceptTally[] {
   const sorted = tallyConcepts(notes);
 
   // 동률은 같은 순위를 나눠 갖고 그만큼 다음 순위를 건너뛴다. 1위가 둘이면
