@@ -1,8 +1,27 @@
+import { readFrontmatter } from "../repository/read.ts";
 import { writeMarkdown } from "../repository/write.ts";
 import { judgeObserverVerbs, type ForbiddenVerb } from "./verbs.ts";
 
 /** Portrait은 단 하나의 파일이다. 저장소 루트 기준 상대 경로다. */
 export const portraitPath = "portrait.md";
+
+/**
+ * 앞의 판정이 무엇으로 어떤 재료에서 나왔는지. 파일에 적혀 있지 않으면 null이다.
+ *
+ * 이 도장이 있어야 사실이 그대로인 날에 모델을 부르지 않을 수 있다. 같은 재료를
+ * 매일 다르게 쓴 커밋이 쌓이면 갱신 기록이 문장 취향의 기록이 된다.
+ */
+export type PortraitStamp = { facts: string | null; prose: string | null };
+
+export async function readPortraitStamp({ root }: { root: string }): Promise<PortraitStamp> {
+  const frontmatter = await readFrontmatter({ root, path: portraitPath });
+
+  return { facts: stringOr(frontmatter?.["facts"]), prose: stringOr(frontmatter?.["prose"]) };
+}
+
+function stringOr(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
 
 /** 쓴 경로, 또는 게이트에 걸려 쓰지 못한 자리들. */
 export type RewriteOutcome = { written: string } | { forbidden: ForbiddenVerb[] };

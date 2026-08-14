@@ -28,6 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    # 모델 호출이 멎어도 러너를 오래 붙잡지 않는다. CLI 쪽에도 제한이 있지만
+    # 그 밖에서 멈추는 경우까지 여기서 닫는다.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -40,6 +43,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # 판정의 문장을 쓰는 쪽이다 (ADR-0008). 저장소 의존성이 아니라 도구이므로
+      # 전역으로 넣는다.
+      - name: Claude Code를 넣는다
+        run: npm install --global @anthropic-ai/claude-code
+
       - name: Portrait을 다시 쓴다
         run: pnpm portrait
         env:
@@ -47,6 +55,9 @@ jobs:
           # 공개 활동만 조회하므로 토큰은 세는 범위를 넓히려고 있는 게 아니라
           # 조회 한도 때문에 있다. 조회가 막혀도 Note만으로 판정이 나온다.
           GITHUB_TOKEN: ${{ github.token }}
+          # `claude setup-token`으로 받은 구독 토큰. 없으면 모델을 부르지 못해
+          # 조립 판정으로 되돌아가고, 갱신 자체는 그대로 돌아간다.
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
       - name: 달라진 것이 있으면 커밋한다
         run: |

@@ -181,6 +181,44 @@ function isMissingDirectory(error: unknown): boolean {
   );
 }
 
+/**
+ * 파일 하나의 frontmatter만 읽는다. 없는 파일, frontmatter 없는 파일, YAML이
+ * 아닌 frontmatter는 모두 null이다 — 셋 다 "적힌 것이 없다"로 다뤄야 하는
+ * 자리에서만 쓰기 때문이다.
+ *
+ * 돌려주는 값은 사람이나 앞선 실행이 쓴 것이므로 형태를 믿지 않는다. 필요한
+ * 자리를 호출자가 확인한다.
+ */
+export async function readFrontmatter({
+  root,
+  path,
+}: {
+  root: string;
+  path: string;
+}): Promise<Record<string, unknown> | null> {
+  let contents: string;
+
+  try {
+    contents = await readFile(join(root, path), "utf8");
+  } catch {
+    return null;
+  }
+
+  const frontmatter = splitFrontmatter(contents);
+
+  if (frontmatter === null) {
+    return null;
+  }
+
+  try {
+    const parsed: unknown = parseYaml(frontmatter);
+
+    return typeof parsed === "object" && parsed !== null ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+}
+
 const frontmatterPattern = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
 
 function splitFrontmatter(contents: string): string | null {

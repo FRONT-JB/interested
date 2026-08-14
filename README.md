@@ -23,7 +23,7 @@ flowchart TD
     M["모델<br/>· Concept 목록과 빈도<br/>· 승격 후보 — 3회 도달<br/>· 주별 묶음 · 편중 · 이동<br/>· 식은 Concept<br/>· Portrait 재료"]
 
     M --> G["루브릭 게이트<br/>초안 + 모델 → 판정"]
-    M --> P["Portrait 다시 쓰기<br/>모델 + GitHub 활동 → 판정"]
+    M --> P["Portrait 다시 쓰기<br/>재료 → 모델 → 감사 → 판정"]
     M --> S["사이트 렌더링<br/>모델 → 화면"]
 
     A["GitHub 공개 활동<br/>— 저장소에 남지 않는 외부 재료 —"] --> P
@@ -35,7 +35,9 @@ frontmatter 파싱, Concept 등장 집계, 3회 임계 판정, 주 단위 묶기
 
 Portrait은 이 중 마지막 것에 GitHub 공개 활동을 붙여 관심과 행동을 나란히 놓는다. GitHub은 Portrait 안에서만 쓰는 재료여서 저장소에 아무것도 남기지 않고, 조회가 막히면 Note만으로 판정이 나온다.
 
-세는 단위가 커밋이 아니라 푸시인 것은 공개 이벤트가 커밋 수를 주지 않기 때문이다 — 없는 값을 세면 관찰자가 조회되지 않은 숫자를 말하게 된다 ([ADR-0007](./docs/adr/0007-the-observer-assembles-instead-of-writing.md)). 이 문장들은 모델이 쓰지 않고 집계값을 끼운 템플릿에서 나오므로, 하루 한 번 돌아가는 갱신에 검증할 수 없는 산문이 섞이지 않는다.
+세는 단위가 커밋이 아니라 푸시인 것은 공개 이벤트가 커밋 수를 주지 않기 때문이다 — 없는 값을 세면 관찰자가 조회되지 않은 숫자를 말하게 된다 ([ADR-0007](./docs/adr/0007-the-observer-assembles-instead-of-writing.md)).
+
+Portrait의 문장은 모델이 쓴다. 재료로 주는 것은 그 사실 목록뿐이고, 나온 문장은 감사를 지나야 파일이 된다 — 관측되지 않는 동사, 재료에 없는 숫자, 재료에 없는 이름, 어긋난 형식 중 하나라도 걸리면 조립 판정으로 되돌아간다 ([ADR-0008](./docs/adr/0008-the-observers-prose-is-written-by-a-model.md)). 그래서 모델이 문장을 써도 갱신이 멈추지 않고, 검증되지 않은 문장도 나가지 않는다.
 
 Note 본문과 Portrait 문장 자체는 모델 호출이라 산문을 검증할 수 없다. 검증되는 것은 모델 계산과 게이트 판정이다.
 
@@ -53,7 +55,8 @@ Note 본문과 Portrait 문장 자체는 모델 호출이라 산문을 검증할
 | [ADR-0004](./docs/adr/0004-the-skill-does-not-invent-the-perspective.md) | 스킬은 관점을 지어내지 않는다 |
 | [ADR-0005](./docs/adr/0005-the-observer-uses-only-observable-verbs.md) | 관찰자는 관측 가능한 동사만 쓴다 |
 | [ADR-0006](./docs/adr/0006-the-main-axis-is-concept-not-time.md) | 우측 메인은 시간축이 아니라 Concept 축이다 |
-| [ADR-0007](./docs/adr/0007-the-observer-assembles-instead-of-writing.md) | 관찰자의 문장은 지어지지 않고 조립된다 |
+| [ADR-0007](./docs/adr/0007-the-observer-assembles-instead-of-writing.md) | 관찰자의 문장은 지어지지 않고 조립된다 — 앞 두 항목은 ADR-0008이 뒤집었다 |
+| [ADR-0008](./docs/adr/0008-the-observers-prose-is-written-by-a-model.md) | 관찰자의 산문은 모델이 쓰고 감사가 막는다 |
 
 관찰자가 `습득했다`고 말하지 않고 `관심이 있다`고만 말하는 이유는 ADR-0005에 있다. 읽었다는 사실에서 관심은 따라 나오지만 습득은 따라 나오지 않는다.
 
