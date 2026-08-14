@@ -1,10 +1,10 @@
 ---
-facts: 9f120db10bf4
+facts: 54d40b73a099
 prose: model
 ---
 
 # Portrait
 
-`parameter-object-pattern`, `query-object`, `stamp-coupling`에 관심이 있다. 이 세 이름은 2026-W28 한 주에 함께 몰렸고, 지금까지 쓴 Note는 그 한 편이 전부다. 세 이름 모두 연속은 한 주였고, 누적도 아직 한 편씩이다.
+`parameter-object-pattern`, `query-object`, `stamp-coupling`에 관심이 있다. 세 개념 모두 2026-W28 한 주에 몰렸고, 연속으로 나타난 주와 누적 편수가 각각 1주와 1편으로 같다. Note는 지금까지 1편이며 마지막으로 쓴 날짜는 2026-07-08이다.
 
-Note를 쓴 주와는 다른 기간인 2026-08-08부터 08-14까지, 공개 푸시는 `FRONT-JB/mcx`로 가장 많이 옮겨갔다. 그 저장소의 주 언어는 `Python`이다. 관심이 머무는 이름과 푸시가 몰린 이름은 서로 다르다.
+2026-08-08부터 2026-08-14까지는 Note를 쓴 주와 다른 기간이다. 이 기간 공개 푸시는 72회이고, 그중 55회가 `FRONT-JB/mcx`(주 언어 `Python`)로 갔다. `parameter-object-pattern`, `query-object`, `stamp-coupling` 어느 것도 이 저장소 이름과 겹치지 않는다.
