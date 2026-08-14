@@ -11,6 +11,13 @@ export type {
 } from "./note/rubric.ts";
 export { conceptSlugSchema, noteFrontmatterSchema } from "./note/schema.ts";
 export type { NoteFrontmatter } from "./note/schema.ts";
+export { claudeCodeWriter } from "./observer/claude.ts";
+export { groundingReasons } from "./observer/grounding.ts";
+export type { Grounding } from "./observer/grounding.ts";
+export { writeObserverProse } from "./observer/prose.ts";
+export type { ProseAttempt, ProseAudit, ProseOutcome, ProseWriter } from "./observer/prose.ts";
+export { judgeObserverVerbs } from "./observer/verbs.ts";
+export type { ForbiddenVerb, VerbVerdict } from "./observer/verbs.ts";
 export { fetchGitHubActivity } from "./portrait/activity.ts";
 export type {
   ActivityOutcome,
@@ -22,20 +29,22 @@ export { auditProse } from "./portrait/audit.ts";
 export type { AuditVerdict } from "./portrait/audit.ts";
 export { factsFingerprint, portraitBrief, portraitPrompt } from "./portrait/brief.ts";
 export type { PortraitBrief } from "./portrait/brief.ts";
-export { claudeCodeWriter } from "./portrait/claude.ts";
 export { contrastCandidates } from "./portrait/contrast.ts";
 export type { Contrast } from "./portrait/contrast.ts";
 export { writePortraitProse } from "./portrait/prose.ts";
-export type { ProseAttempt, ProseOutcome, ProseWriter } from "./portrait/prose.ts";
 export { renderPortrait } from "./portrait/render.ts";
 export { portraitPath, readPortraitStamp, rewritePortrait } from "./portrait/rewrite.ts";
 export type { PortraitStamp, RewriteOutcome } from "./portrait/rewrite.ts";
 export { standingOf } from "./portrait/standing.ts";
 export type { ConceptStreak, PortraitStanding } from "./portrait/standing.ts";
-export { judgeObserverVerbs } from "./portrait/verbs.ts";
-export type { ForbiddenVerb, VerbVerdict } from "./portrait/verbs.ts";
-export { readFrontmatter, readRepository } from "./repository/read.ts";
-export type { ConceptTally, Note, RepositoryModel, UnreadableFile } from "./repository/read.ts";
+export { readDocument, readFrontmatter, readRepository } from "./repository/read.ts";
+export type {
+  ConceptTally,
+  MarkdownDocument,
+  Note,
+  RepositoryModel,
+  UnreadableFile,
+} from "./repository/read.ts";
 export { renderMarkdown, writeMarkdown } from "./repository/write.ts";
 export type { WriteOutcome } from "./repository/write.ts";
 export { auditBriefing } from "./source/briefing.ts";

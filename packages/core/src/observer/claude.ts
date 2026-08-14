@@ -8,7 +8,7 @@ const run = promisify(execFile);
 
 /**
  * Claude Code CLI를 헤드리스로 한 번 부르는 자리. 이 파일이 모델과 닿는 유일한
- * 곳이고, 나머지는 `ProseWriter` 하나를 받아 돌아간다 (`portrait/prose.ts`).
+ * 곳이고, 나머지는 `ProseWriter` 하나를 받아 돌아간다 (`observer/prose.ts`).
  *
  * 인증은 환경 변수에 맡긴다 — 구독 토큰(`CLAUDE_CODE_OAUTH_TOKEN`, `claude
  * setup-token`으로 받는다)이나 API 키(`ANTHROPIC_API_KEY`). 토큰을 코드가 읽어
@@ -23,7 +23,7 @@ const run = promisify(execFile);
  */
 export function claudeCodeWriter({
   command = "claude",
-  model = process.env.PORTRAIT_MODEL ?? "claude-sonnet-5",
+  model = process.env.OBSERVER_MODEL ?? "claude-sonnet-5",
   cwd = tmpdir(),
   timeoutMs = 120_000,
 }: {

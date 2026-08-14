@@ -12,7 +12,8 @@ export type VerbVerdict = { outcome: "pass" } | { outcome: "forbidden"; found: F
  *
  * 읽었다는 사실에서 관심은 따라 나오지만 습득은 따라 나오지 않는다. 이 문턱이
  * 있어야 사람 손 없이 자라는 문서가 거짓말을 하지 않고, 그래서 이 게이트는
- * Portrait을 파일로 남기는 경로 안에 있다 (`portrait/rewrite.ts`).
+ * 저절로 자라는 문서를 파일로 남기는 경로 안에 있다 — Portrait을 다시 쓰는
+ * 자리(`portrait/rewrite.ts`)와 Arc에 붙이는 자리(`arc/append.ts`)다.
  *
  * 걸리면 고치지 않고 실패한다. 관찰자의 문장은 기계가 쓴 템플릿이므로, 금지
  * 동사가 나왔다는 것은 사람이 템플릿을 잘못 고쳤다는 뜻이다. 말없이 고쳐 두면

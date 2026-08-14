@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 
+import { judgeObserverVerbs } from "../observer/verbs.ts";
 import { fetchGitHubActivity, type ActivityOutcome, type GitHubActivity } from "./activity.ts";
 import { contrastCandidates } from "./contrast.ts";
 import { renderPortrait } from "./render.ts";
 import type { PortraitStanding } from "./standing.ts";
-import { judgeObserverVerbs } from "./verbs.ts";
 
 const empty: PortraitStanding = {
   noteCount: 0,

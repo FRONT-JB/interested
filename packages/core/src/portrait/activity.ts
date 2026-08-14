@@ -232,7 +232,7 @@ async function getJson<T>({
 
     if (!response.ok) {
       // 주소를 코드 표기로 감싼다. 이 문장이 Portrait 본문에 실리고, 동사
-      // 게이트는 코드 표기 안을 검사하지 않는다 (`portrait/verbs.ts`).
+      // 게이트는 코드 표기 안을 검사하지 않는다 (`observer/verbs.ts`).
       return { failed: `\`${url}\` 가 ${response.status}으로 답했다` };
     }
 

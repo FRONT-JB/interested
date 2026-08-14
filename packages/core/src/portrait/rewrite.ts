@@ -1,6 +1,6 @@
+import { judgeObserverVerbs, type ForbiddenVerb } from "../observer/verbs.ts";
 import { readFrontmatter } from "../repository/read.ts";
 import { writeMarkdown } from "../repository/write.ts";
-import { judgeObserverVerbs, type ForbiddenVerb } from "./verbs.ts";
 
 /** Portrait은 단 하나의 파일이다. 저장소 루트 기준 상대 경로다. */
 export const portraitPath = "portrait.md";

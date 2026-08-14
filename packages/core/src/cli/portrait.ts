@@ -8,9 +8,9 @@
 // Trail과 달리 이미 있는 파일을 덮는다. Portrait은 지금의 얼굴이므로 앞의
 // 판정이 남아 있으면 그게 곧 거짓이 된다 (ADR-0005).
 
+import { claudeCodeWriter } from "../observer/claude.ts";
 import { fetchGitHubActivity, type ActivityOutcome } from "../portrait/activity.ts";
 import { factsFingerprint, portraitBrief } from "../portrait/brief.ts";
-import { claudeCodeWriter } from "../portrait/claude.ts";
 import { contrastCandidates } from "../portrait/contrast.ts";
 import { writePortraitProse } from "../portrait/prose.ts";
 import { renderPortrait } from "../portrait/render.ts";

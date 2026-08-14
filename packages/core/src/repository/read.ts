@@ -182,20 +182,36 @@ function isMissingDirectory(error: unknown): boolean {
 }
 
 /**
- * 파일 하나의 frontmatter만 읽는다. 없는 파일, frontmatter 없는 파일, YAML이
- * 아닌 frontmatter는 모두 null이다 — 셋 다 "적힌 것이 없다"로 다뤄야 하는
- * 자리에서만 쓰기 때문이다.
+ * 마크다운 파일 하나를 frontmatter와 본문으로 나눈 것.
  *
- * 돌려주는 값은 사람이나 앞선 실행이 쓴 것이므로 형태를 믿지 않는다. 필요한
- * 자리를 호출자가 확인한다.
+ * `frontmatter`가 null인 것은 두 가지다 — 적힌 것이 없거나, 적혀 있지만 YAML로
+ * 읽히지 않거나. `malformed`가 그 둘을 가른다. 앞선 실행이 남긴 값을 읽는 쪽에는
+ * 이 구분이 필요하다 — 없는 것은 처음이라는 뜻이지만 깨진 것은 아무 뜻도 아니고,
+ * 둘을 같이 다루면 앞선 실행의 기록을 없던 일로 만든다 (`arc/append.ts`).
  */
-export async function readFrontmatter({
+export type MarkdownDocument = {
+  frontmatter: Record<string, unknown> | null;
+  /** `---` 블록이 있는데 YAML 매핑으로 읽히지 않았다. */
+  malformed: boolean;
+  body: string;
+};
+
+/**
+ * 파일 하나를 frontmatter와 본문으로 갈라 읽는다. 없는 파일은 null이다.
+ *
+ * 본문까지 돌려주는 것은 Arc를 위해서다 — 앞의 내용을 지우지 않고 뒤에 붙이려면
+ * 앞의 내용이 손에 있어야 한다 (`arc/append.ts`).
+ *
+ * 돌려주는 frontmatter는 사람이나 앞선 실행이 쓴 것이므로 형태를 믿지 않는다.
+ * 필요한 자리를 호출자가 확인한다.
+ */
+export async function readDocument({
   root,
   path,
 }: {
   root: string;
   path: string;
-}): Promise<Record<string, unknown> | null> {
+}): Promise<MarkdownDocument | null> {
   let contents: string;
 
   try {
@@ -204,12 +220,22 @@ export async function readFrontmatter({
     return null;
   }
 
-  const frontmatter = splitFrontmatter(contents);
+  const matched = frontmatterPattern.exec(contents);
 
-  if (frontmatter === null) {
-    return null;
+  if (matched === null) {
+    return { frontmatter: null, malformed: false, body: contents };
   }
 
+  const frontmatter = parseFrontmatter(matched[1] ?? "");
+
+  return {
+    frontmatter,
+    malformed: frontmatter === null,
+    body: contents.slice(matched[0].length),
+  };
+}
+
+function parseFrontmatter(frontmatter: string): Record<string, unknown> | null {
   try {
     const parsed: unknown = parseYaml(frontmatter);
 
@@ -217,6 +243,21 @@ export async function readFrontmatter({
   } catch {
     return null;
   }
+}
+
+/**
+ * 파일 하나의 frontmatter만 읽는다. 없는 파일, frontmatter 없는 파일, YAML이
+ * 아닌 frontmatter는 모두 null이다 — 셋 다 "적힌 것이 없다"로 다뤄야 하는
+ * 자리에서만 쓰기 때문이다.
+ */
+export async function readFrontmatter({
+  root,
+  path,
+}: {
+  root: string;
+  path: string;
+}): Promise<Record<string, unknown> | null> {
+  return (await readDocument({ root, path }))?.frontmatter ?? null;
 }
 
 const frontmatterPattern = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
