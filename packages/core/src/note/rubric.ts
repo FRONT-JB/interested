@@ -20,8 +20,15 @@ export type NoteDraft = {
   doubt: string;
 };
 
-/** 되물을 수 있는 자리. 관점 세 자리와 Take뿐이고, 형식 항목은 여기 없다. */
-export type AskBackField = "take" | "harvest" | "application" | "doubt";
+/**
+ * 되물을 수 있는 자리. 관점 세 자리와 Take, 그리고 Concept이 하나도 남지
+ * 않았을 때의 `concepts`다. 형식을 고치는 것과 이름을 새로 정하는 것은 다른
+ * 일이라, 후자는 기계가 하지 않는다 (ADR-0001).
+ */
+export type AskBackField = "take" | PerspectiveField | "concepts";
+
+/** 스킬이 던진 세 질문에 사람이 답한 자리. 글이 들어가므로 길이로 잴 수 있다. */
+type PerspectiveField = "harvest" | "application" | "doubt";
 
 /** 말없이 고칠 수 있는 자리. 되물을 것과 겹치는 이름이지만 경로가 다르다. */
 export type CorrectionField =
@@ -90,6 +97,23 @@ export function judgeDraft({
     doubt: correctStyle(draft.doubt, "doubt", corrections),
     concepts: correctConcepts(draft.concepts, vocabulary, corrections),
   };
+
+  // 이름을 하나도 확정하지 못했으면 통과가 아니다. Note는 Concept을 최소 하나
+  // 참조해야 하므로(`note/schema.ts`) 이대로는 파일을 쓸 수 없고, `pass`로
+  // 내보내면 쓸 수 없는 초안이 통과한 것으로 보인다.
+  if (corrected.concepts.length === 0) {
+    return {
+      outcome: "ask-back",
+      askBack: [
+        {
+          field: "concepts",
+          reason: "Concept 이름을 하나도 확정하지 못했다 — 기계가 어휘를 지어내지 않는다",
+          question:
+            "이 Note가 다루는 Concept의 영어 이름을 정해 달라. 저장소에 이미 쓰는 이름이 있으면 그것을 쓴다.",
+        },
+      ],
+    };
+  }
 
   return { outcome: "pass", corrected, corrections };
 }
@@ -162,7 +186,7 @@ function collectAskBacks(draft: NoteDraft): AskBack[] {
 function addPerspectiveAskBack(
   askBack: AskBack[],
   draft: NoteDraft,
-  { field, question }: { field: Exclude<AskBackField, "take">; question: string },
+  { field, question }: { field: PerspectiveField; question: string },
 ): void {
   const answer = draft[field];
 
@@ -449,16 +473,30 @@ function correctConcepts(
   return corrected;
 }
 
-/** 영숫자와 하이픈만 남긴다. 남는 것이 없으면 빈 문자열이다. */
+/**
+ * slug로 옮길 수 있는 이름만 옮기고, 나머지는 빈 문자열이다.
+ *
+ * 옮길 수 없는 글자를 지우고 남은 것을 이름으로 삼지 않는다. 그렇게 하면
+ * `React 서버 컴포넌트`가 `react`가 되고 `c++`이 `c`가 되어, 기계가 뜻이 다른
+ * Concept을 말없이 확정한다. 이름의 일관성이 이 구조의 단일 실패 지점이므로
+ * (ADR-0001) 확정할 수 없는 이름은 지운 자리로 남겨 스킬에 넘긴다.
+ */
 function toConceptSlug(name: string): string {
-  return name
-    .trim()
-    .toLowerCase()
+  const trimmed = name.trim().toLowerCase();
+
+  if (untranslatablePattern.test(trimmed)) {
+    return "";
+  }
+
+  return trimmed
     .replace(/[\s_./]+/gu, "-")
     .replace(/[^a-z0-9-]/gu, "")
     .replace(/-{2,}/gu, "-")
     .replace(/^-+|-+$/gu, "");
 }
+
+/** 라틴 영숫자와 구분자 말고 다른 글자가 하나라도 있으면 옮길 수 없는 이름이다. */
+const untranslatablePattern = /[^a-z0-9\s_./-]/u;
 
 /**
  * 하이픈과 복수형만 다른 이름을 한 자리로 모은다. `server-components`와

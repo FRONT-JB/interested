@@ -10,10 +10,26 @@ import { z } from "zod";
  */
 const weekPattern = /^(\d{4})-W(\d{2})$/;
 
-/** 사람이 손으로 넘기는 주 식별자. 형식 검사는 경계에서 한 번만 한다. */
+/**
+ * 사람이 손으로 넘기는 주 식별자. 형식과 달력을 여기서 함께 본다.
+ *
+ * 형식만 보면 `2026-W99`가 통과해 `weekRange`가 더 깊은 곳에서 터진다.
+ * 경계에서 막기로 한 값은 경계에서 다 막아야 안쪽이 그 값을 믿을 수 있다.
+ */
 export const trailWeekSchema = z
   .string()
-  .regex(weekPattern, "주 식별자는 2026-W33 형식이어야 한다");
+  .regex(weekPattern, "주 식별자는 2026-W33 형식이어야 한다")
+  .refine(isCalendarWeek, "달력에 없는 주다");
+
+function isCalendarWeek(week: string): boolean {
+  try {
+    weekRange(week);
+
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const dayInMilliseconds = 24 * 60 * 60 * 1000;
 

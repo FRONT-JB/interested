@@ -19,8 +19,12 @@ export function findDuplicateSource<T extends { source: string }>({
 /**
  * 공유 버튼이 붙여 주는 꼬리표들. 이걸 남겨 두면 같은 영상을 두 번 쓰고도
  * 중복이 아니라고 답하게 된다.
+ *
+ * 유튜브 재생 위치인 `t`는 여기 없다. 호스트를 가리지 않고 지우면 `?t=`가
+ * 뜻을 갖는 다른 서비스에서 원문 둘을 한 Source로 보게 된다. 같은 영상을
+ * 못 잡고 지나치는 쪽이 다른 원문을 같다고 답하는 쪽보다 낫다.
  */
-const disposableParameters = new Set(["si", "feature", "t", "ref", "ref_src", "fbclid", "gclid"]);
+const disposableParameters = new Set(["si", "feature", "ref", "ref_src", "fbclid", "gclid"]);
 
 /**
  * 같은 원문을 가리키는 URL들을 한 글자로 모은다. 프로토콜과 `www.`를 버리는

@@ -192,8 +192,12 @@ function splitFrontmatter(contents: string): string | null {
 /**
  * 등장이 잦은 Concept이 위로 오고, 같은 횟수면 이름 순이다. 사람이 읽는
  * 출력과 웹이 같은 순서를 쓰도록 정렬을 여기서 한 번만 정한다.
+ *
+ * 저장소 전체를 세는 곳도 한 주만 세는 곳도(`trail/tally.ts`) 이 함수를
+ * 지난다. 정렬 규칙이 두 벌이 되면 같은 Concept이 화면마다 다른 자리에
+ * 놓인다.
  */
-function tallyConcepts(notes: Note[]): ConceptTally[] {
+export function tallyConcepts(notes: readonly Pick<Note, "concepts">[]): ConceptTally[] {
   const noteCounts = new Map<string, number>();
 
   for (const note of notes) {

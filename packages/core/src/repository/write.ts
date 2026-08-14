@@ -10,8 +10,8 @@ export type WriteOutcome = { written: string } | { kept: string };
  * frontmatter와 본문을 마크다운 한 편으로 조립한다. 파일을 쓰지 않으므로
  * 초안을 파일로 남기기 전에 사람에게 먼저 보여줄 수 있다.
  *
- * frontmatter를 넘기지 않으면 본문만 나온다. Note에는 형식이 있지만
- * (ADR-0001) 모든 발행물이 frontmatter를 갖는 것은 아니다.
+ * frontmatter를 넘기지 않으면 본문만 나온다. Note에는 고정된 형식이 있지만
+ * (`note/schema.ts`) 모든 발행물이 frontmatter를 갖는 것은 아니다.
  */
 export function renderMarkdown({
   frontmatter,

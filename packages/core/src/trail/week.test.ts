@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 
-import { previousWeek, weekOf, weekRange } from "./week.ts";
+import { previousWeek, trailWeekSchema, weekOf, weekRange } from "./week.ts";
 
 const originalTimeZone = process.env.TZ;
 
@@ -70,5 +70,22 @@ describe("previousWeek", () => {
 
   it("해의 첫 주에서는 지난 해의 마지막 주로 넘어간다", () => {
     expect(previousWeek("2026-W01")).toBe("2025-W52");
+  });
+});
+
+describe("trailWeekSchema", () => {
+  it("주 식별자 형식을 만족하는 값을 읽는다", () => {
+    expect(trailWeekSchema.safeParse("2026-W33").success).toBe(true);
+  });
+
+  it("형식이 아닌 값을 거부한다", () => {
+    expect(trailWeekSchema.safeParse("2026-08-14").success).toBe(false);
+    expect(trailWeekSchema.safeParse("이번 주").success).toBe(false);
+  });
+
+  it("형식은 맞지만 달력에 없는 주를 거부한다", () => {
+    // 형식만 보고 통과시키면 `weekRange`가 더 깊은 곳에서 터진다.
+    expect(trailWeekSchema.safeParse("2026-W99").success).toBe(false);
+    expect(trailWeekSchema.safeParse("2026-W00").success).toBe(false);
   });
 });

@@ -57,8 +57,8 @@ function renderCrowding({ concepts, dominant }: WeekTally): string[] {
     ...concepts.map(({ concept, noteCount }) => `- \`${concept}\` ${noteCount}편`),
     "",
     dominant.length === 1
-      ? `이번 주는 ${code(dominant)}에 가장 몰렸다.`
-      : `이번 주는 ${code(dominant)}에 똑같이 몰렸다.`,
+      ? `이번 주는 ${conceptList(dominant)}에 가장 몰렸다.`
+      : `이번 주는 ${conceptList(dominant)}에 똑같이 몰렸다.`,
   ];
 }
 
@@ -71,11 +71,11 @@ function renderMovement({ movement }: WeekTally): string[] {
   const lines: string[] = [];
 
   if (entered.length > 0) {
-    lines.push(`- 새로 등장 — ${code(entered)}`);
+    lines.push(`- 새로 등장 — ${conceptList(entered)}`);
   }
 
   if (left.length > 0) {
-    lines.push(`- 사라짐 — ${code(left)}`);
+    lines.push(`- 사라짐 — ${conceptList(left)}`);
   }
 
   if (moved.length > 0) {
@@ -105,6 +105,7 @@ function renderNotes({ notes }: WeekTally): string[] {
  * 그 판정은 규칙으로 닫히지 않으므로 맞히려 들수록 틀리는 자리가 는다.
  * 쉼표로 두면 항목 뒤에 조사가 붙지 않아 문제 자체가 사라진다.
  */
-function code(concepts: string[]): string {
+/** Concept 이름들을 코드 표기로 감싸 쉼표로 잇는다. 조사가 붙지 않는 형태다. */
+function conceptList(concepts: string[]): string {
   return concepts.map((concept) => `\`${concept}\``).join(", ");
 }

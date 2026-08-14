@@ -64,7 +64,7 @@ console.log(JSON.stringify({
 
 `NoteDraft` 한 덩어리로 모은다.
 
-| 자리 | 출처 |
+| 자리 | 어디서 오나 |
 |---|---|
 | `source` | 1단계에서 받은 링크 |
 | `title` | 원문이 던진 질문 형태로 짓는다. 사람에게 확인받는다 |
@@ -97,12 +97,13 @@ console.log(JSON.stringify(judgeDraft({ draft, vocabulary }), null, 2));
 - `askBack[].question`을 사람에게 그대로 던진다. 답을 다시 받아 4단계로 돌아간다.
 - **초안을 보여주지 않는다.** 조립한 문장도, 고칠 수 있었던 형식도 꺼내지 않는다.
 - 답을 대신 채우거나 문턱을 넘길 만큼만 늘려 쓰지 않는다.
+- `field`가 `concepts`면 게이트가 이름을 하나도 확정하지 못한 것이다. `vocabulary`를 보고 **영어 이름을 정해** 4단계로 돌아간다. 기존 어휘에 뜻이 같은 것이 있으면 새 이름을 만들지 말고 그것을 쓴다 ([ADR-0001](../../../docs/adr/0001-note-connects-through-concept.md)). 이름이 관점을 담는 자리이므로 사람에게 확인받는다.
 - 게이트의 판정이 틀렸다고 보이면 — 짧지만 날카로운 답이 걸렸다면 — 사람에게 그렇게 말하고 판단을 받는다. 게이트를 우회하는 것도 사람의 결정이다.
 
 **`outcome: "pass"`** — `corrected`를 쓰고 `corrections`는 한 줄로 알린다.
 
 - 경어체 교정과 Concept slug 교정은 되묻지 않고 이미 반영돼 있다. 무엇을 고쳤는지는 알리되 승인을 구하지 않는다.
-- `after`가 `null`인 `corrections` 항목은 게이트가 고치지 못하고 지운 Concept이다. 대개 한글 이름이다. `vocabulary`를 보고 **영어 이름을 정해** `concepts`에 다시 넣고 게이트를 다시 돌린다. 기존 어휘에 뜻이 같은 것이 있으면 새 이름을 만들지 말고 그것을 쓴다 ([ADR-0001](../../../docs/adr/0001-note-connects-through-concept.md)).
+- `after`가 `null`인 `corrections` 항목은 게이트가 이름을 확정하지 못하고 지운 Concept이다. 한글이 섞였거나(`React 서버 컴포넌트`) 영숫자로 옮길 수 없는 기호가 있는(`c++`) 이름이다. **게이트는 이런 이름을 깎아 내지 않는다** — `react`나 `c`로 줄이면 뜻이 다른 Concept이 조용히 굳기 때문이다. 지워진 자리마다 `vocabulary`를 보고 영어 이름을 정해 `concepts`에 다시 넣고 게이트를 다시 돌린다. 살아남은 이름이 하나도 없으면 애초에 `pass`가 나오지 않는다.
 - **`corrections`의 `after`를 그대로 믿지 마라.** 아래 "경어체 교정이 틀리는 자리"를 보고, 걸리는 문장은 6단계에서 손으로 맞춘다.
 
 #### 경어체 교정이 틀리는 자리

@@ -26,10 +26,17 @@ describe("findDuplicateSource", () => {
     );
   });
 
-  it("공유 링크에 붙는 추적 파라미터와 재생 위치는 무시한다", () => {
+  it("공유 링크에 붙는 추적 파라미터는 무시한다", () => {
     expect(
-      findDuplicateSource({ source: "https://youtu.be/43sDzyanzR0?si=abc123&t=42", notes })?.path,
+      findDuplicateSource({ source: "https://youtu.be/43sDzyanzR0?si=abc123&utm_source=x", notes })
+        ?.path,
     ).toBe("notes/2026-07-08-parameter-object-pattern-js.md");
+  });
+
+  it("재생 위치 `t`는 지우지 않아 같은 영상을 놓친다 — 다른 원문을 같다고 답하지 않기 위해서다", () => {
+    // `?t=`는 서비스마다 뜻이 달라서 호스트를 가리지 않고 지울 수 없다. 놓친
+    // 중복은 스킬이 사람에게 되묻고, 잘못 잡은 중복은 되물을 기회가 없다.
+    expect(findDuplicateSource({ source: "https://youtu.be/43sDzyanzR0?t=42", notes })).toBeNull();
   });
 
   it("http와 https만 다른 URL도 같은 Source로 본다", () => {

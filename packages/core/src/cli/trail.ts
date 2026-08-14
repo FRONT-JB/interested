@@ -1,18 +1,16 @@
+// 그 주 Note를 묶어 Trail 초안을 내놓는다. 집계는 `trail/tally.ts`가, 문장은
+// `trail/draft.ts`가 하고 여기서는 저장소를 읽고 결과를 내보낼 뿐이다.
+//
+// 초안은 화면에도 찍고 `trails/`에도 남긴다. 화면에만 있으면 고칠 자리가
+// 없고, 파일로만 남기면 무엇이 나왔는지 열어 봐야 안다. 이미 있는 파일은
+// `writeMarkdown`이 덮지 않으므로(ADR-0004) 사람이 고쳐 둔 문장은 두 번째
+// 실행에도 살아남는다.
+
 import { readRepository } from "../repository/read.ts";
 import { writeMarkdown } from "../repository/write.ts";
 import { renderTrailDraft } from "../trail/draft.ts";
 import { tallyWeek } from "../trail/tally.ts";
 import { trailWeekSchema, weekOf } from "../trail/week.ts";
-
-/**
- * 그 주 Note를 묶어 Trail 초안을 내놓는다. 집계는 `trail/tally.ts`가, 문장은
- * `trail/draft.ts`가 하고 여기서는 저장소를 읽고 결과를 내보낼 뿐이다.
- *
- * 초안은 화면에도 찍고 `trails/`에도 남긴다. 화면에만 있으면 고칠 자리가
- * 없고, 파일로만 남기면 무엇이 나왔는지 열어 봐야 안다. 이미 있는 파일은
- * `writeMarkdown`이 덮지 않으므로(ADR-0004) 사람이 고쳐 둔 문장은 두 번째
- * 실행에도 살아남는다.
- */
 
 /**
  * 오늘은 명령을 돌린 사람의 달력을 따른다. 집계는 UTC로 하지만(`week.ts`)
@@ -32,7 +30,7 @@ const requested = process.argv[2] ?? weekOf(today());
 const week = trailWeekSchema.safeParse(requested);
 
 if (!week.success) {
-  console.error(`${requested} 는 주 식별자가 아니다. 2026-W33 형식으로 넘긴다.`);
+  console.error(`${requested} — ${week.error.issues[0]?.message ?? "쓸 수 없는 주 식별자다"}`);
   process.exitCode = 1;
 } else {
   const root = process.cwd();

@@ -270,6 +270,47 @@ describe("judgeDraft — 경어체 교정이 틀리게 고치는 자리", () => 
   });
 });
 
+describe("judgeDraft — 기계가 확정할 수 없는 Concept 이름", () => {
+  it("한글이 섞인 이름은 한글만 지워 확정하지 않고 스킬에 넘긴다", () => {
+    const verdict = judge({ concepts: ["React 서버 컴포넌트", "rsc"] });
+
+    // `react`로 깎아 내면 `rsc`여야 할 것이 뜻이 다른 Concept으로 굳는다.
+    // 이름의 일관성이 이 구조의 단일 실패 지점이다 (ADR-0001).
+    expect(verdict.outcome === "pass" && verdict.corrected.concepts).toEqual(["rsc"]);
+    expect(
+      verdict.outcome === "pass" &&
+        verdict.corrections.find(({ before }) => before === "React 서버 컴포넌트")?.after,
+    ).toBeNull();
+  });
+
+  it("영숫자로 옮길 수 없는 기호가 섞인 이름도 넘긴다", () => {
+    const verdict = judge({ concepts: ["c++", "rsc"] });
+
+    // `c`로 깎이면 C와 C++이 한 Concept이 된다.
+    expect(verdict.outcome === "pass" && verdict.corrected.concepts).toEqual(["rsc"]);
+  });
+
+  it("대소문자와 공백만 다른 이름은 그대로 slug로 고친다", () => {
+    const verdict = judge({ concepts: ["Parameter Object Pattern"] });
+
+    expect(verdict.outcome === "pass" && verdict.corrected.concepts).toEqual([
+      "parameter-object-pattern",
+    ]);
+  });
+
+  it("Concept이 하나도 남지 않으면 초안을 내놓지 않고 되묻는다", () => {
+    const verdict = judge({ concepts: ["서버 컴포넌트"] });
+
+    // Note는 Concept을 최소 하나 참조해야 하므로(`note/schema.ts`) 이 상태로는
+    // 파일을 쓸 수 없다. `pass`로 내보내면 쓸 수 없는 초안이 통과로 보인다.
+    expect(verdict.outcome).toBe("ask-back");
+    expect(verdict).not.toHaveProperty("corrected");
+    expect(verdict.outcome === "ask-back" && verdict.askBack.map(({ field }) => field)).toContain(
+      "concepts",
+    );
+  });
+});
+
 describe("judgeDraft — 두 경로는 서로 다른 자리로 간다", () => {
   it("재료가 부족하면 형식 위반을 고친 초안을 내놓지 않는다", () => {
     const verdict = judge({

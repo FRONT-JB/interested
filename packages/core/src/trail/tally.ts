@@ -1,4 +1,4 @@
-import type { ConceptTally, Note } from "../repository/read.ts";
+import { tallyConcepts, type ConceptTally, type Note } from "../repository/read.ts";
 import { previousWeek, weekOf, weekRange } from "./week.ts";
 
 /**
@@ -44,7 +44,7 @@ export type WeekTally = {
 export function tallyWeek({ notes, week }: { notes: Note[]; week: string }): WeekTally {
   const { start, end } = weekRange(week);
   const thisWeek = notesOf(notes, week);
-  const concepts = tallyConcepts(thisWeek);
+  const concepts = rankConcepts(thisWeek);
 
   return {
     week,
@@ -60,7 +60,7 @@ export function tallyWeek({ notes, week }: { notes: Note[]; week: string }): Wee
     // 것이 없는 게 아니라 아무것도 없던 주와 견주는 것이고, 그래서 이번 주
     // Concept이 전부 새로 등장이 된다. 빈 주를 건너뛰고 거슬러 올라가면
     // "지난 주"가 발행할 때마다 다른 기간을 가리키게 된다.
-    movement: movementBetween(tallyConcepts(notesOf(notes, previousWeek(week))), concepts),
+    movement: movementBetween(rankConcepts(notesOf(notes, previousWeek(week))), concepts),
   };
 }
 
@@ -77,22 +77,12 @@ function notesOf(notes: Note[], week: string): Note[] {
 }
 
 /**
- * 등장이 잦은 Concept이 위로 오고, 같은 횟수면 이름 순이다. 저장소 전체가
- * 한 가지 정렬을 쓰도록 `read.ts`의 `tallyConcepts`와 같은 규칙을 따른다.
+ * 세는 것과 정렬은 `read.ts`의 `tallyConcepts`가 하고, 여기서는 순위만 얹는다.
+ * 저장소 전체를 세는 곳과 한 주만 세는 곳이 같은 함수를 지나야 같은 Concept이
+ * 화면마다 같은 자리에 놓인다.
  */
-function tallyConcepts(notes: Note[]): WeekConceptTally[] {
-  const noteCounts = new Map<string, number>();
-
-  for (const note of notes) {
-    // 임계는 Note 수이지 언급 수가 아니다 (ADR-0002).
-    for (const concept of new Set(note.concepts)) {
-      noteCounts.set(concept, (noteCounts.get(concept) ?? 0) + 1);
-    }
-  }
-
-  const sorted = [...noteCounts]
-    .map(([concept, noteCount]) => ({ concept, noteCount }))
-    .sort((a, b) => b.noteCount - a.noteCount || a.concept.localeCompare(b.concept));
+function rankConcepts(notes: Note[]): WeekConceptTally[] {
+  const sorted = tallyConcepts(notes);
 
   // 동률은 같은 순위를 나눠 갖고 그만큼 다음 순위를 건너뛴다. 1위가 둘이면
   // 다음은 3위다.
