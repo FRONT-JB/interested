@@ -13,6 +13,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    // 명시하지 않으면 tsc가 상위 디렉토리의 node_modules/@types까지 훑어
+    // 이 프로젝트와 무관한 타입을 끌어온다. 지우지 말 것.
     "types": ["node", "react", "react-dom"],
     "plugins": [
       {

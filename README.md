@@ -49,4 +49,4 @@ Note 본문과 Portrait 문장 자체는 모델 호출이라 산문을 검증할
 
 ## 상태
 
-설계만 끝났고 아직 Note가 없다. 웹은 Trail이 네 번 발행된 뒤에 만든다 — 실물 없이 설계하면 추측이 되므로.
+Note 형식이 고정됐고 그것을 지키는 Note가 한 편 있다. Concept은 아직 하나도 승격되지 않았고 Trail도 없다 — [ADR-0002](./docs/adr/0002-concept-promotion-at-three.md)대로 정상 상태다. 웹은 Trail이 네 번 발행된 뒤에 만든다 — 실물 없이 설계하면 추측이 되므로.
