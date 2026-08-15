@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { SidePanel } from "@/components/side-panel";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,7 +12,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className="min-h-dvh antialiased">
+        <div className="mx-auto flex min-h-dvh w-full max-w-6xl flex-col md:flex-row">
+          <SidePanel />
+          <main className="min-w-0 flex-1 px-6 py-10 md:px-12 md:py-14">{children}</main>
+        </div>
+      </body>
     </html>
   );
 }

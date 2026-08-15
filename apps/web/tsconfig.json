@@ -9,6 +9,9 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    // `@interested/core`가 TypeScript 원본을 상대 경로로 잇는다. 번들러가 그
+    // 경로를 그대로 푸는데 tsc만 막으면 같은 코드가 두 도구에서 갈린다.
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
