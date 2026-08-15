@@ -42,7 +42,7 @@ export function Feed({ notes }: { notes: FeedItem[] }) {
               shares ? "opacity-100" : "opacity-30",
             )}
           >
-            <div className="flex items-start justify-between gap-6 px-0 py-8 sm:gap-10 sm:px-8 sm:py-10">
+            <div className="flex items-start justify-between gap-6 px-0 py-7 sm:gap-10 sm:px-6 sm:py-8">
               <div className="min-w-0 space-y-4">
                 {/*
                   줄의 주인공은 Note의 제목이다. Take는 한 문장이라 목록에서 읽으면

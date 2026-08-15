@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  */
 export function Markdown({ children, compact = false }: { children: string; compact?: boolean }) {
   return (
-    <div className={cn("text-charcoal", compact ? "type-caption space-y-3" : "type-body space-y-5")}>
+    <div className={cn("text-charcoal", compact ? "type-caption space-y-2.5" : "type-body space-y-4")}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -21,13 +21,13 @@ export function Markdown({ children, compact = false }: { children: string; comp
           ),
           h2: ({ children: content }) => (
             <h2
-              className={cn("text-ink", compact ? "type-card-title mt-6" : "type-heading-sm mt-12")}
+              className={cn("text-ink", compact ? "type-card-title mt-5" : "type-heading-sm mt-9")}
             >
               {content}
             </h2>
           ),
           h3: ({ children: content }) => (
-            <h3 className="type-card-title text-ink mt-8">{content}</h3>
+            <h3 className="type-card-title text-ink mt-7">{content}</h3>
           ),
           p: ({ children: content }) => <p>{content}</p>,
           ul: ({ children: content }) => (
@@ -42,7 +42,7 @@ export function Markdown({ children, compact = false }: { children: string; comp
             `{colors.surface}` 판 위에 얹어 자리를 바꾼다.
           */
           blockquote: ({ children: content }) => (
-            <blockquote className="bg-surface text-ink my-6 space-y-3 rounded-xl px-5 py-4">
+            <blockquote className="bg-surface text-ink my-5 space-y-2.5 rounded-xl px-5 py-4">
               {content}
             </blockquote>
           ),
@@ -62,7 +62,7 @@ export function Markdown({ children, compact = false }: { children: string; comp
               {content}
             </a>
           ),
-          hr: () => <hr className="border-hairline my-10" />,
+          hr: () => <hr className="border-hairline my-8" />,
         }}
       >
         {children}

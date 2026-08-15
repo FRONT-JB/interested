@@ -19,7 +19,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <header className="flex items-baseline gap-3">
         <h1 className="type-caption-bold text-steel tracking-[0.08em] uppercase">Notes</h1>
         <span className="type-caption text-stone">{notes.length}</span>

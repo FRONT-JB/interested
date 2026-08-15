@@ -39,7 +39,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto flex min-h-dvh w-full max-w-[1280px] flex-col lg:flex-row">
           <SidePanel />
 
-          <main className="min-w-0 flex-1 px-6 pt-12 pb-24 sm:px-8 lg:px-12 lg:pt-24">{children}</main>
+          {/*
+            DESIGN.md — 96px(`spacing.hero`)는 마케팅 상단의 값이고, 읽는 지면은
+            64px(`spacing.section`)로 조인다. 이 화면은 훑고 읽는 자리다.
+          */}
+          <main className="min-w-0 flex-1 px-6 pt-10 pb-16 sm:px-8 lg:px-10 lg:pt-16">
+            {children}
+          </main>
         </div>
       </body>
     </html>

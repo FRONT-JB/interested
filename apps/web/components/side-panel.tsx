@@ -20,7 +20,7 @@ export async function SidePanel() {
   const portrait = await observerDocument("portrait.md");
 
   return (
-    <aside className="border-hairline flex flex-col gap-8 border-b px-6 pt-12 pb-12 sm:px-8 lg:sticky lg:top-0 lg:h-dvh lg:w-[340px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-b-0 lg:px-8 lg:pt-24 lg:pb-12">
+    <aside className="border-hairline flex flex-col gap-6 border-b px-6 pt-10 pb-10 sm:px-8 lg:sticky lg:top-0 lg:h-dvh lg:w-[340px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-b-0 lg:px-8 lg:pt-16 lg:pb-10">
       <div className="flex items-center justify-between gap-4">
         {/* 워드마크. 저장소 이름이 곧 이 화면이 하는 말이라 다른 인삿말을 두지 않는다. */}
         <Link href="/" className="type-card-title tracking-[0.14em] uppercase">
@@ -51,7 +51,12 @@ export async function SidePanel() {
         <PanelLink href="/portrait">Portrait이 무엇인지</PanelLink>
       </section>
 
-      <section className="mt-auto space-y-3 pt-4">
+      {/*
+        Arc는 Portrait 아래에 온다. 패널 바닥에 붙여 두면 Note가 적은 날 두 절
+        사이가 화면 높이만큼 벌어지는데, 그 빈자리는 구조가 아니라 사고다.
+        경계는 여백이 아니라 선 하나로 말한다.
+      */}
+      <section className="border-hairline space-y-3 border-t pt-6">
         <SectionLabel>Arc</SectionLabel>
 
         <p className="type-caption text-steel">

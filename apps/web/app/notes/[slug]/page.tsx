@@ -32,7 +32,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
         ← Notes
       </Link>
 
-      <header className="mt-10 space-y-6">
+      <header className="mt-8 space-y-5">
         <time className="type-micro text-stone block">{note.date}</time>
 
         <h1 className="type-heading-lg text-balance">{note.title}</h1>
@@ -41,7 +41,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
           Take는 원문의 주장이 아니라 내가 건진 것이다 (ADR-0003). 무엇을 얻었는지가
           본문보다 먼저 읽히도록 앞에 두고, `{colors.surface}` 판 위에 얹어 세운다.
         */}
-        <div className="bg-surface space-y-2 rounded-xl px-6 py-5">
+        <div className="bg-surface space-y-2 rounded-xl px-5 py-4">
           <span className="type-caption-bold text-brand-coral block">TAKE</span>
           <p className="type-subtitle text-ink text-pretty">{note.take}</p>
         </div>
@@ -71,7 +71,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
         </a>
       </header>
 
-      <hr className="border-hairline mt-12 mb-12" />
+      <hr className="border-hairline mt-10 mb-10" />
 
       {source === "" ? null : <Markdown>{source}</Markdown>}
 
@@ -82,7 +82,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
         문법을 여기서도 쓴다 (ADR-0010).
       */}
       {mine === "" ? null : (
-        <section className="bg-surface mt-12 space-y-5 rounded-xl px-6 py-7 sm:px-8 sm:py-9">
+        <section className="bg-surface mt-10 space-y-4 rounded-xl px-5 py-6 sm:px-7 sm:py-7">
           <p className="type-caption-bold text-brand-coral tracking-[0.12em] uppercase">
             내가 남긴 것
           </p>

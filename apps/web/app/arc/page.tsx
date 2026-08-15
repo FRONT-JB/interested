@@ -10,9 +10,9 @@ export default async function ArcPage() {
     <article className="max-w-[720px]">
       <p className="type-caption-bold text-stone tracking-[0.12em] uppercase">Arc</p>
 
-      <h1 className="type-heading-lg mt-6 max-w-[22ch] text-balance">길어지기만 하는 하나의 서사</h1>
+      <h1 className="type-heading-lg mt-4 max-w-[22ch] text-balance">길어지기만 하는 하나의 서사</h1>
 
-      <div className="mt-6 max-w-[60ch] space-y-4">
+      <div className="mt-5 max-w-[60ch] space-y-3">
         <p className="type-subtitle text-slate">
           시작하기 전 무엇에 끌렸는지에서 출발해, Note가 쌓일 때마다 살이 붙습니다.
         </p>
@@ -32,7 +32,7 @@ export default async function ArcPage() {
         </p>
       </div>
 
-      <hr className="border-hairline mt-12 mb-12" />
+      <hr className="border-hairline mt-10 mb-10" />
 
       {arc === null ? (
         <p className="type-body text-steel">아직 씨앗이 놓이지 않았습니다.</p>
