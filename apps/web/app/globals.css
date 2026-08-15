@@ -5,116 +5,131 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
-  색은 두 가지만 기억하면 된다. 지면은 종이(라이트)이거나 먹(다크)이고, 브랜드
-  색은 인주다 — 이 저장소가 하는 일이 판정을 찍어 남기는 것이므로 도장의 색을
-  쓴다. 인주는 전체의 10% 안쪽으로만 나타나고, 그래서 나타날 때 눈에 든다.
+  색·타이포·모양의 정본은 루트 `DESIGN.md`다. 이 파일은 그 토큰을 CSS 변수로
+  옮겨 놓은 것이고, 값을 바꿀 일이 생기면 여기가 아니라 DESIGN.md를 먼저 고친다.
+  이름도 그 문서의 것을 그대로 쓴다 — 화면에서 `steel`을 보면 문서에서 같은
+  이름을 찾을 수 있어야 한다.
 
-  중성색은 전부 인주 쪽(hue 40 언저리)으로 아주 옅게 기울여 둔다. 눈으로 색을
-  집어낼 수는 없지만 지면과 강조색이 한 몸으로 읽힌다.
+  shadcn 컴포넌트가 기대하는 이름(`--background`, `--primary` 따위)은 그 위에
+  얹는다. 두 벌의 색이 아니라 한 벌의 색에 이름이 둘 붙어 있는 것이다.
 */
 @theme inline {
-    --font-heading: var(--font-display);
-    --font-sans: var(--font-body);
+    /*
+      한 얼굴로 전부 낸다. DESIGN.md는 DM Sans를 적고 있지만 그 얼굴에는 한글이
+      없어 화면의 대부분이 폴백으로 떨어지므로, 서체만 Pretendard로 바꾸고
+      크기·무게·자간의 위계는 그 문서를 그대로 따른다.
+    */
+    --font-sans: var(--font-stack);
+    --font-heading: var(--font-stack);
     --font-mono: var(--font-mono-stack);
-    --color-seal: var(--seal);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
+
+    /* DESIGN.md — colors */
+    --color-canvas: var(--canvas);
+    --color-surface: var(--surface);
+    --color-surface-soft: var(--surface-soft);
+    --color-hairline: var(--hairline);
+    --color-hairline-soft: var(--hairline-soft);
+    --color-ink: var(--ink);
+    --color-charcoal: var(--charcoal);
+    --color-slate: var(--slate);
+    --color-steel: var(--steel);
+    --color-stone: var(--stone);
+    --color-brand-coral: var(--brand-coral);
+
+    /* DESIGN.md — rounded */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+    --radius-3xl: 24px;
+    --radius-hero: 32px;
+
+    /* shadcn이 기대하는 이름들 */
     --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
-    /* 실제 물체는 튕기지 않고 감속한다. 화면의 움직임도 그렇게 멈춘다. */
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    /* Known Gaps — 전환 시간이 명세에 없다. 문서가 권한 150~200ms를 쓴다. */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 종이. 순백이 아니라 아주 옅게 데운 흰색이다. */
 :root {
-    --background: oklch(0.984 0.004 70);
-    --foreground: oklch(0.235 0.012 45);
-    --card: oklch(0.984 0.004 70);
-    --card-foreground: oklch(0.235 0.012 45);
-    --popover: oklch(0.995 0.003 70);
-    --popover-foreground: oklch(0.235 0.012 45);
-    --primary: oklch(0.235 0.012 45);
-    --primary-foreground: oklch(0.984 0.004 70);
-    --secondary: oklch(0.955 0.006 65);
-    --secondary-foreground: oklch(0.325 0.012 45);
-    --muted: oklch(0.955 0.006 65);
-    --muted-foreground: oklch(0.525 0.014 48);
-    --accent: oklch(0.945 0.008 60);
-    --accent-foreground: oklch(0.235 0.012 45);
-    --destructive: oklch(0.512 0.194 27);
-    --border: oklch(0.895 0.007 60);
-    --input: oklch(0.895 0.007 60);
-    --ring: oklch(0.555 0.176 38);
-    --radius: 0.25rem;
-    --seal: oklch(0.525 0.182 36);
-    --sidebar: oklch(0.976 0.005 70);
-    --sidebar-foreground: oklch(0.235 0.012 45);
-    --sidebar-primary: oklch(0.235 0.012 45);
-    --sidebar-primary-foreground: oklch(0.984 0.004 70);
-    --sidebar-accent: oklch(0.945 0.008 60);
-    --sidebar-accent-foreground: oklch(0.235 0.012 45);
-    --sidebar-border: oklch(0.895 0.007 60);
-    --sidebar-ring: oklch(0.555 0.176 38);
+    /* DESIGN.md — colors (그대로 옮긴 값) */
+    --canvas: #ffffff;
+    --surface: #f7f8fa;
+    --surface-soft: #f2f3f5;
+    --hairline: #e5e7eb;
+    --hairline-soft: #eaecf0;
+    --ink: #0a0a0a;
+    --ink-strong: #000000;
+    --charcoal: #222222;
+    --slate: #45515e;
+    --steel: #5f5f5f;
+    --stone: #8e8e93;
+    --muted-text: #a8aab2;
+    --brand-coral: #ff5530;
+    --on-dark: #ffffff;
+
+    --background: var(--canvas);
+    --foreground: var(--ink);
+    --card: var(--canvas);
+    --card-foreground: var(--ink);
+    --popover: var(--canvas);
+    --popover-foreground: var(--ink);
+    --primary: var(--ink);
+    --primary-foreground: var(--on-dark);
+    --secondary: var(--surface);
+    --secondary-foreground: var(--charcoal);
+    --muted: var(--surface);
+    --muted-foreground: var(--steel);
+    --accent: var(--surface);
+    --accent-foreground: var(--ink);
+    --destructive: #d45656;
+    --border: var(--hairline);
+    --input: var(--hairline);
+    --ring: var(--ink);
+    --radius: 8px;
 }
 
-/* 먹. 순흑이 아니라 아주 옅게 데운 검정이다. */
+/*
+  DESIGN.md의 Known Gaps — "다크 모드 팔레트는 아직 없다". 명세에 없는 값이므로
+  여기서 만든다. 만드는 규칙은 하나다: 지면과 잉크를 뒤집되 브랜드 코랄은 그대로
+  둔다. 코랄은 제품의 정체를 가리키는 색이라 지면이 바뀌었다고 달라지지 않는다.
+*/
 .dark {
-    --background: oklch(0.178 0.008 52);
-    --foreground: oklch(0.928 0.006 70);
-    --card: oklch(0.178 0.008 52);
-    --card-foreground: oklch(0.928 0.006 70);
-    --popover: oklch(0.222 0.009 52);
-    --popover-foreground: oklch(0.928 0.006 70);
-    --primary: oklch(0.928 0.006 70);
-    --primary-foreground: oklch(0.178 0.008 52);
-    --secondary: oklch(0.258 0.010 52);
-    --secondary-foreground: oklch(0.898 0.006 70);
-    --muted: oklch(0.258 0.010 52);
-    --muted-foreground: oklch(0.668 0.012 58);
-    --accent: oklch(0.268 0.011 52);
-    --accent-foreground: oklch(0.928 0.006 70);
-    --destructive: oklch(0.652 0.178 25);
-    --border: oklch(0.928 0.006 70 / 13%);
-    --input: oklch(0.928 0.006 70 / 16%);
-    --ring: oklch(0.685 0.152 42);
-    --seal: oklch(0.702 0.148 44);
-    --sidebar: oklch(0.168 0.008 52);
-    --sidebar-foreground: oklch(0.928 0.006 70);
-    --sidebar-primary: oklch(0.928 0.006 70);
-    --sidebar-primary-foreground: oklch(0.178 0.008 52);
-    --sidebar-accent: oklch(0.268 0.011 52);
-    --sidebar-accent-foreground: oklch(0.928 0.006 70);
-    --sidebar-border: oklch(0.928 0.006 70 / 13%);
-    --sidebar-ring: oklch(0.685 0.152 42);
+    --canvas: #0a0a0a;
+    --surface: #17171a;
+    --surface-soft: #121214;
+    --hairline: #ffffff1f;
+    --hairline-soft: #ffffff14;
+    --ink: #f7f8fa;
+    --ink-strong: #ffffff;
+    --charcoal: #e5e7eb;
+    --slate: #b9c0c9;
+    --steel: #9aa0a8;
+    --stone: #7c8087;
+    --muted-text: #6b6f76;
+    --on-dark: #0a0a0a;
+
+    --primary-foreground: #0a0a0a;
+    --destructive: #e57373;
 }
 
 @layer base {
@@ -124,24 +139,22 @@
 
     body {
         @apply bg-background text-foreground font-sans;
-        /* 한글 본문에 자간을 조금 좁힌다. 라틴 기준의 기본값은 한글에서 성기게 읽힌다. */
-        letter-spacing: -0.005em;
+        /* DESIGN.md — body-md: 16px / 1.50 */
+        font-size: 16px;
+        line-height: 1.5;
     }
 
-    /*
-      등폭은 Concept slug와 날짜에만 쓴다. 둘 다 파일에 적힌 그대로여야 하는
-      값이라 글자 하나가 달라지면 다른 것을 가리키게 된다. "기술적인 느낌"을
-      내려고 쓰는 자리는 없다.
-    */
     :root {
+        --font-stack:
+            "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+            sans-serif;
         --font-mono-stack: ui-monospace, "SF Mono", "Menlo", monospace;
     }
 
     ::selection {
-        background-color: color-mix(in oklch, var(--seal) 22%, transparent);
+        background-color: color-mix(in srgb, var(--brand-coral) 22%, transparent);
     }
 
-    /* 움직임을 줄이기로 한 사람에게는 상태만 바뀌고 이동은 없다. */
     @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -149,5 +162,142 @@
             animation-duration: 0.01ms !important;
             transition-duration: 0.01ms !important;
         }
+    }
+}
+
+/*
+  DESIGN.md — typography. 크기와 자간이 한 벌로 묶여야 하는 것들만 클래스로 둔다.
+  표에 적힌 값을 그대로 쓰고, 반응형 축소는 Responsive Behavior 절의 단계를 따른다
+  (80 → 56 → 40 → 32).
+*/
+@layer components {
+    .type-hero {
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.8px;
+    }
+
+    @media (min-width: 480px) {
+        .type-hero {
+            font-size: 40px;
+            letter-spacing: -1px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .type-hero {
+            font-size: 56px;
+            letter-spacing: -1.5px;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .type-hero {
+            font-size: 80px;
+            letter-spacing: -2px;
+        }
+    }
+
+    .type-display {
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.8px;
+    }
+
+    @media (min-width: 768px) {
+        .type-display {
+            font-size: 40px;
+            letter-spacing: -1px;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .type-display {
+            font-size: 56px;
+            letter-spacing: -1.5px;
+        }
+    }
+
+    .type-heading-lg {
+        font-size: 28px;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: -0.6px;
+    }
+
+    @media (min-width: 768px) {
+        .type-heading-lg {
+            font-size: 40px;
+            letter-spacing: -1px;
+        }
+    }
+
+    .type-heading-md {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: -0.5px;
+    }
+
+    @media (min-width: 768px) {
+        .type-heading-md {
+            font-size: 32px;
+        }
+    }
+
+    .type-heading-sm {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .type-card-title {
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .type-subtitle {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .type-body {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .type-body-sm {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+    }
+
+    .type-body-sm-medium {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .type-caption {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.7;
+    }
+
+    .type-caption-bold {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .type-micro {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.5;
     }
 }

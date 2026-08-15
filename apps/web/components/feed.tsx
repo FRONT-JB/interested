@@ -11,27 +11,26 @@ export type FeedItem = {
   slug: string;
   date: string;
   title: string;
-  take: string;
   concepts: string[];
 };
 
 /**
- * Note 피드. 카드가 아니라 줄이다 — 기록 한 편은 지면 위의 한 칸이지 담긴
- * 물건이 아니다. 항목을 나누는 것은 상자가 아니라 가로선 하나다.
+ * Note 피드. 카드가 아니라 줄이다 — 항목을 나누는 것은 상자가 아니라
+ * `{colors.hairline}` 한 줄이다.
  *
- * 줄에 손을 얹으면 그 줄이 통째로 뒤집힌다. 목록에서 지금 무엇을 짚고 있는지를
- * 색이 아니라 지면의 반전으로 말하는 방식이고, 커서를 따라 읽는 자리가 한 눈에
- * 든다.
+ * 줄에 손을 얹으면 그 줄이 `{colors.primary}`로 뒤집힌다. DESIGN.md에서 검정은
+ * 이 시스템의 지배적인 상호작용 색이므로(`button-primary`), 목록에서 지금 짚고
+ * 있는 자리도 같은 색으로 말한다.
  *
- * Concept에 손을 얹으면 그 이름을 공유하는 다른 Note가 남고 나머지는 물러난다.
- * Note끼리는 Concept을 거쳐서만 이어지므로(ADR-0001), 이 동작이 곧 저장소의
- * 구조를 손으로 만지게 하는 자리다. 장식이 아니라 구조의 노출이다.
+ * Concept은 `pill-tab`이고, 손을 얹으면 `pill-tab-active`가 되면서 그 이름을
+ * 공유하는 Note만 남는다. Note끼리는 Concept을 거쳐서만 이어지므로(ADR-0001),
+ * 이 동작이 곧 저장소의 구조를 손으로 만지게 하는 자리다.
  */
 export function Feed({ notes }: { notes: FeedItem[] }) {
   const [linked, setLinked] = useState<string | null>(null);
 
   return (
-    <div className="border-foreground/15 border-b">
+    <div className="border-hairline border-b">
       {notes.map((note) => {
         const shares = linked === null || note.concepts.includes(linked);
 
@@ -39,38 +38,34 @@ export function Feed({ notes }: { notes: FeedItem[] }) {
           <article
             key={note.slug}
             className={cn(
-              "group border-foreground/15 hover:bg-foreground relative border-t transition-[background-color,opacity] duration-200",
-              shares ? "opacity-100" : "opacity-25",
+              "group border-hairline hover:bg-primary relative border-t transition-[background-color,opacity] duration-200",
+              shares ? "opacity-100" : "opacity-30",
             )}
           >
-            <div className="flex items-start justify-between gap-6 px-1 py-9 sm:gap-10 sm:px-6 sm:py-11">
-              <div className="min-w-0 space-y-3.5">
+            <div className="flex items-start justify-between gap-6 px-0 py-8 sm:gap-10 sm:px-8 sm:py-10">
+              <div className="min-w-0 space-y-4">
                 {/*
-                  지면에서 가장 큰 것은 제목이 아니라 Take다. 늘어선 것이 글 목록이
-                  아니라 수확으로 읽혀야 한다 (ADR-0011). 줄 전체가 링크가 되도록
-                  이 글자에서 판을 펴 둔다.
+                  줄의 주인공은 Note의 제목이다. Take는 한 문장이라 목록에서 읽으면
+                  줄이 길어지고, 무엇을 건졌는지는 들어가서 읽을 자리에 둔다.
+                  크기는 DESIGN.md의 display-lg 단계를 따른다.
                 */}
-                <h2 className="font-heading group-hover:text-background text-[1.5rem] leading-[1.4] font-semibold tracking-tight text-pretty transition-colors duration-200 sm:text-[1.95rem] lg:text-[2.35rem] lg:leading-[1.35]">
+                <h2 className="type-display group-hover:text-primary-foreground text-balance transition-colors duration-200">
                   <Link href={`/notes/${note.slug}`} className="before:absolute before:inset-0">
-                    {note.take}
+                    {note.title}
                   </Link>
                 </h2>
 
-                <p className="text-muted-foreground group-hover:text-background/55 max-w-[58ch] text-[13.5px] leading-6 transition-colors duration-200">
-                  {note.title}
-                </p>
-
-                <div className="relative z-10 flex flex-wrap gap-x-4 gap-y-1.5 pt-1">
+                <div className="relative z-10 flex flex-wrap gap-2 pt-1">
                   {note.concepts.map((concept) => (
                     <span
                       key={concept}
                       onPointerEnter={() => setLinked(concept)}
                       onPointerLeave={() => setLinked(null)}
                       className={cn(
-                        "cursor-default font-mono text-[11.5px] transition-colors duration-200",
+                        "type-body-sm-medium cursor-default rounded-full border px-4 py-1 transition-colors duration-200",
                         linked === concept
-                          ? "text-seal group-hover:text-background"
-                          : "text-muted-foreground group-hover:text-background/55 hover:text-foreground",
+                          ? "bg-primary text-primary-foreground border-primary group-hover:bg-primary-foreground group-hover:text-primary group-hover:border-primary-foreground"
+                          : "border-hairline text-steel group-hover:border-primary-foreground/25 group-hover:text-primary-foreground/60",
                       )}
                     >
                       {concept}
@@ -79,16 +74,19 @@ export function Feed({ notes }: { notes: FeedItem[] }) {
                 </div>
               </div>
 
-              <div className="flex shrink-0 items-center gap-4 pt-1.5">
-                <time className="text-muted-foreground group-hover:text-background/55 font-mono text-[11.5px] tracking-wide transition-colors duration-200">
+              <div className="flex shrink-0 items-center gap-4 pt-2">
+                <time className="type-micro text-stone group-hover:text-primary-foreground/60 transition-colors duration-200">
                   {note.date}
                 </time>
 
-                <ArrowRight
-                  aria-hidden
-                  strokeWidth={1.5}
-                  className="text-background hidden size-5 -translate-x-1.5 opacity-0 transition-[opacity,transform] duration-300 ease-[var(--ease-out-expo)] group-hover:translate-x-0 group-hover:opacity-100 sm:block"
-                />
+                {/* DESIGN.md — button-icon-circular (36px). 줄을 짚었을 때만 나온다. */}
+                <span className="border-primary-foreground/25 hidden size-9 shrink-0 items-center justify-center rounded-full border opacity-0 transition-opacity duration-200 group-hover:opacity-100 sm:flex">
+                  <ArrowRight
+                    aria-hidden
+                    strokeWidth={1.75}
+                    className="text-primary-foreground size-4"
+                  />
+                </span>
               </div>
             </div>
           </article>

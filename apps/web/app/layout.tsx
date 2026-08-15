@@ -1,33 +1,8 @@
 import type { Metadata } from "next";
-import { Gothic_A1, Hahmlet } from "next/font/google";
 
 import { SidePanel } from "@/components/side-panel";
 
 import "./globals.css";
-
-/**
- * 표제는 한글 세리프다. 개발자 화면의 반사적 선택(Pretendard·Noto Sans KR·Inter)
- * 대신 미술관 캡션과 문학 출판물 쪽의 목소리를 쓴다 — 이 저장소가 파는 것이
- * 없고 읽히기만 하는 자리이기 때문이다.
- */
-const display = Hahmlet({
-  // 서브셋을 지정하지 않는다. 지정하면 그 목록에 한글이 없어 본문만 이 얼굴이
-  // 되고 한글은 폴백으로 떨어진다 — 이 화면은 대부분이 한글이므로 그러면 표제
-  // 서체를 쓰지 않는 것과 같다. 서브셋을 비우면 unicode-range로 나뉜 한글 조각까지
-  // 함께 실린다.
-  preload: false,
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-/** 본문은 조용한 한글 산세리프. 무게가 넓어 위계를 만들 수 있다. */
-const body = Gothic_A1({
-  preload: false,
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-body",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "interested",
@@ -40,20 +15,31 @@ export const metadata: Metadata = {
  */
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
 
+/**
+ * Pretendard. 한 얼굴로 한글과 라틴을 모두 낸다 — DESIGN.md는 DM Sans를 적고
+ * 있지만 그 얼굴에는 한글이 없어 화면의 대부분이 폴백으로 떨어진다. 서체만
+ * 바꾸고 크기·무게·자간의 위계는 그 문서를 그대로 따른다.
+ *
+ * Google Fonts에 없어 `next/font`로 싣지 못한다. 동적 서브셋 CSS를 쓰면 화면에
+ * 나온 글자에 해당하는 조각만 내려온다.
+ */
+const pretendard =
+  "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" suppressHydrationWarning className={`${display.variable} ${body.variable}`}>
+    <html lang="ko" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
+        <link rel="stylesheet" href={pretendard} />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-dvh antialiased">
-        <div className="mx-auto flex min-h-dvh w-full max-w-[78rem] flex-col lg:flex-row">
+        {/* DESIGN.md — 1280px max-width with 32px gutters */}
+        <div className="mx-auto flex min-h-dvh w-full max-w-[1280px] flex-col lg:flex-row">
           <SidePanel />
 
-          {/* 지면. 좌측이 말하는 자리라면 여기는 기록이 놓이는 자리다. */}
-          <main className="min-w-0 flex-1 px-6 pt-10 pb-24 sm:px-10 lg:px-16 lg:pt-24">
-            {children}
-          </main>
+          <main className="min-w-0 flex-1 px-6 pt-12 pb-24 sm:px-8 lg:px-12 lg:pt-24">{children}</main>
         </div>
       </body>
     </html>

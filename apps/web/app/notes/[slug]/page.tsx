@@ -24,55 +24,52 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
   const { note, body } = found;
 
   return (
-    <article className="max-w-[46rem]">
-      <Link
-        href="/"
-        className="text-muted-foreground hover:text-foreground font-mono text-[11.5px] tracking-wide transition-colors"
-      >
+    /* DESIGN.md — docs-prose-block: 본문 최대폭 720px */
+    <article className="max-w-[720px]">
+      <Link href="/" className="type-body-sm-medium text-steel hover:text-ink transition-colors">
         ← Notes
       </Link>
 
       <header className="mt-10 space-y-6">
-        <time className="text-muted-foreground block font-mono text-[11.5px] tracking-wide">
-          {note.date}
-        </time>
+        <time className="type-micro text-stone block">{note.date}</time>
 
-        <h1 className="font-heading text-[1.85rem] leading-[1.45] font-medium tracking-tight text-balance sm:text-[2.15rem]">
-          {note.title}
-        </h1>
+        <h1 className="type-heading-lg text-balance">{note.title}</h1>
 
         {/*
           Take는 원문의 주장이 아니라 내가 건진 것이다 (ADR-0003). 무엇을 얻었는지가
-          본문보다 먼저 읽히도록 앞에 두되, 색띠로 표시하지 않고 라벨과 크기로 세운다.
+          본문보다 먼저 읽히도록 앞에 두고, `{colors.surface}` 판 위에 얹어 세운다.
         */}
-        <div className="space-y-2 pt-2">
-          <h2 className="text-seal font-mono text-[10.5px] tracking-[0.18em] uppercase">Take</h2>
-
-          <p className="font-heading max-w-[38ch] text-[1.2rem] leading-[1.7] font-normal text-pretty">
-            {note.take}
-          </p>
+        <div className="bg-surface space-y-2 rounded-xl px-6 py-5">
+          <span className="type-caption-bold text-brand-coral block">TAKE</span>
+          <p className="type-subtitle text-ink text-pretty">{note.take}</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pt-2">
+        <div className="flex flex-wrap gap-2">
           {note.concepts.map((concept) => (
-            <span key={concept} className="text-muted-foreground font-mono text-[11.5px]">
+            <span
+              key={concept}
+              className="type-body-sm-medium border-hairline text-steel rounded-full border px-4 py-1"
+            >
               {concept}
             </span>
           ))}
         </div>
 
-        {/* Note는 원문을 대체하지 않는다 (ADR-0003). 원문으로 가는 길이 늘 열려 있다. */}
+        {/*
+          Note는 원문을 대체하지 않는다 (ADR-0003). 원문으로 가는 길이 늘 열려 있고,
+          모양은 DESIGN.md의 button-secondary — 외곽선 알약이다.
+        */}
         <a
           href={note.source}
           target="_blank"
           rel="noreferrer"
-          className="text-muted-foreground hover:text-seal decoration-border hover:decoration-seal inline-block text-[12.5px] underline decoration-1 underline-offset-[3px] transition-colors"
+          className="type-body-sm-medium border-ink text-ink hover:bg-primary hover:text-primary-foreground inline-flex items-center rounded-full border px-6 py-2.5 transition-colors duration-200"
         >
           원문 보기
         </a>
       </header>
 
-      <hr className="border-border mt-12 mb-12" />
+      <hr className="border-hairline mt-12 mb-12" />
 
       <Markdown>{body}</Markdown>
     </article>
