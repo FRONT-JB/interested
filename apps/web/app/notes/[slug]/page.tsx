@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Markdown } from "@/components/markdown";
+import { splitNoteVoices } from "@/lib/note-sections";
 import { feedNotes, noteBySlug } from "@/lib/repository";
 
 export async function generateStaticParams() {
@@ -22,6 +23,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
   }
 
   const { note, body } = found;
+  const { source, mine } = splitNoteVoices(body);
 
   return (
     /* DESIGN.md — docs-prose-block: 본문 최대폭 720px */
@@ -71,7 +73,23 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
 
       <hr className="border-hairline mt-12 mb-12" />
 
-      <Markdown>{body}</Markdown>
+      {source === "" ? null : <Markdown>{source}</Markdown>}
+
+      {/*
+        여기서부터는 본인의 말이다. 원문을 옮긴 절과 같은 지면에 그냥 이어 붙이면
+        읽는 쪽은 전부를 요약으로 읽는데, 이 저장소가 남기려는 것은 요약이 아니라
+        읽고 남긴 것이다 (ADR-0003). Arc에서 회색 판이 본인의 말인 것과 같은
+        문법을 여기서도 쓴다 (ADR-0010).
+      */}
+      {mine === "" ? null : (
+        <section className="bg-surface mt-12 space-y-5 rounded-xl px-6 py-7 sm:px-8 sm:py-9">
+          <p className="type-caption-bold text-brand-coral tracking-[0.12em] uppercase">
+            내가 남긴 것
+          </p>
+
+          <Markdown>{mine}</Markdown>
+        </section>
+      )}
     </article>
   );
 }
