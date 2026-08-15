@@ -8,9 +8,7 @@ export default async function ArcPage() {
 
   return (
     <article className="max-w-[720px]">
-      <span className="type-caption-bold border-hairline text-steel inline-block rounded-full border px-2.5 py-1">
-        ARC
-      </span>
+      <p className="type-caption-bold text-stone tracking-[0.12em] uppercase">Arc</p>
 
       <h1 className="type-heading-lg mt-6 max-w-[22ch] text-balance">길어지기만 하는 하나의 서사</h1>
 

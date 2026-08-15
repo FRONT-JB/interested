@@ -8,9 +8,7 @@ export default async function PortraitPage() {
 
   return (
     <article className="max-w-[720px]">
-      <span className="type-caption-bold bg-brand-coral inline-block rounded-full px-2.5 py-1 text-white">
-        PORTRAIT
-      </span>
+      <p className="type-caption-bold text-brand-coral tracking-[0.12em] uppercase">Portrait</p>
 
       <h1 className="type-heading-lg mt-6 max-w-[20ch] text-balance">
         관찰자가 내놓는 짧은 판정
