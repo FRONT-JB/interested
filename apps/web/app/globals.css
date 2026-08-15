@@ -4,9 +4,19 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  색은 두 가지만 기억하면 된다. 지면은 종이(라이트)이거나 먹(다크)이고, 브랜드
+  색은 인주다 — 이 저장소가 하는 일이 판정을 찍어 남기는 것이므로 도장의 색을
+  쓴다. 인주는 전체의 10% 안쪽으로만 나타나고, 그래서 나타날 때 눈에 든다.
+
+  중성색은 전부 인주 쪽(hue 40 언저리)으로 아주 옅게 기울여 둔다. 눈으로 색을
+  집어낼 수는 없지만 지면과 강조색이 한 몸으로 읽힌다.
+*/
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: var(--font-sans);
+    --font-heading: var(--font-display);
+    --font-sans: var(--font-body);
+    --font-mono: var(--font-mono-stack);
+    --color-seal: var(--seal);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -15,11 +25,6 @@
     --color-sidebar-primary: var(--sidebar-primary);
     --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
@@ -45,85 +50,104 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    /* 실제 물체는 튕기지 않고 감속한다. 화면의 움직임도 그렇게 멈춘다. */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* 종이. 순백이 아니라 아주 옅게 데운 흰색이다. */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --background: oklch(0.984 0.004 70);
+    --foreground: oklch(0.235 0.012 45);
+    --card: oklch(0.984 0.004 70);
+    --card-foreground: oklch(0.235 0.012 45);
+    --popover: oklch(0.995 0.003 70);
+    --popover-foreground: oklch(0.235 0.012 45);
+    --primary: oklch(0.235 0.012 45);
+    --primary-foreground: oklch(0.984 0.004 70);
+    --secondary: oklch(0.955 0.006 65);
+    --secondary-foreground: oklch(0.325 0.012 45);
+    --muted: oklch(0.955 0.006 65);
+    --muted-foreground: oklch(0.525 0.014 48);
+    --accent: oklch(0.945 0.008 60);
+    --accent-foreground: oklch(0.235 0.012 45);
+    --destructive: oklch(0.512 0.194 27);
+    --border: oklch(0.895 0.007 60);
+    --input: oklch(0.895 0.007 60);
+    --ring: oklch(0.555 0.176 38);
+    --radius: 0.25rem;
+    --seal: oklch(0.525 0.182 36);
+    --sidebar: oklch(0.976 0.005 70);
+    --sidebar-foreground: oklch(0.235 0.012 45);
+    --sidebar-primary: oklch(0.235 0.012 45);
+    --sidebar-primary-foreground: oklch(0.984 0.004 70);
+    --sidebar-accent: oklch(0.945 0.008 60);
+    --sidebar-accent-foreground: oklch(0.235 0.012 45);
+    --sidebar-border: oklch(0.895 0.007 60);
+    --sidebar-ring: oklch(0.555 0.176 38);
 }
 
+/* 먹. 순흑이 아니라 아주 옅게 데운 검정이다. */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --background: oklch(0.178 0.008 52);
+    --foreground: oklch(0.928 0.006 70);
+    --card: oklch(0.178 0.008 52);
+    --card-foreground: oklch(0.928 0.006 70);
+    --popover: oklch(0.222 0.009 52);
+    --popover-foreground: oklch(0.928 0.006 70);
+    --primary: oklch(0.928 0.006 70);
+    --primary-foreground: oklch(0.178 0.008 52);
+    --secondary: oklch(0.258 0.010 52);
+    --secondary-foreground: oklch(0.898 0.006 70);
+    --muted: oklch(0.258 0.010 52);
+    --muted-foreground: oklch(0.668 0.012 58);
+    --accent: oklch(0.268 0.011 52);
+    --accent-foreground: oklch(0.928 0.006 70);
+    --destructive: oklch(0.652 0.178 25);
+    --border: oklch(0.928 0.006 70 / 13%);
+    --input: oklch(0.928 0.006 70 / 16%);
+    --ring: oklch(0.685 0.152 42);
+    --seal: oklch(0.702 0.148 44);
+    --sidebar: oklch(0.168 0.008 52);
+    --sidebar-foreground: oklch(0.928 0.006 70);
+    --sidebar-primary: oklch(0.928 0.006 70);
+    --sidebar-primary-foreground: oklch(0.178 0.008 52);
+    --sidebar-accent: oklch(0.268 0.011 52);
+    --sidebar-accent-foreground: oklch(0.928 0.006 70);
+    --sidebar-border: oklch(0.928 0.006 70 / 13%);
+    --sidebar-ring: oklch(0.685 0.152 42);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground font-sans;
+        /* 한글 본문에 자간을 조금 좁힌다. 라틴 기준의 기본값은 한글에서 성기게 읽힌다. */
+        letter-spacing: -0.005em;
     }
-  html {
-    @apply font-sans;
+
+    /*
+      등폭은 Concept slug와 날짜에만 쓴다. 둘 다 파일에 적힌 그대로여야 하는
+      값이라 글자 하나가 달라지면 다른 것을 가리키게 된다. "기술적인 느낌"을
+      내려고 쓰는 자리는 없다.
+    */
+    :root {
+        --font-mono-stack: ui-monospace, "SF Mono", "Menlo", monospace;
+    }
+
+    ::selection {
+        background-color: color-mix(in oklch, var(--seal) 22%, transparent);
+    }
+
+    /* 움직임을 줄이기로 한 사람에게는 상태만 바뀌고 이동은 없다. */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 }

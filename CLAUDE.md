@@ -13,3 +13,7 @@
 ### Domain docs
 
 Single-context — 루트 `CONTEXT.md` + `docs/adr/`. See `docs/agents/domain.md`.
+
+### Design context
+
+화면을 만들거나 고치기 전에 읽습니다 — 누가 보는지, 무엇처럼 보여야 하는지, 무엇처럼 보이면 안 되는지. See `.impeccable.md`.
