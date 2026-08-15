@@ -5,7 +5,10 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { observerDocument } from "@/lib/repository";
 
 /**
- * 좌측 고정 패널. 위는 사람이 하는 말이고 아래는 관찰자가 하는 말이다.
+ * 좌측 고정 패널. 워드마크 하나와 관찰자의 말이 전부다.
+ *
+ * 인삿말을 두지 않는다. 이 자리에서 사람이 자기를 소개하면 아래의 Portrait과
+ * 같은 목소리로 읽히는데, Portrait은 본인이 아니라 관찰자가 쓴 문단이다.
  *
  * Portrait을 링크 뒤에 감추지 않고 여기에 그대로 편다. 이 저장소의 컨셉이
  * "관찰자가 나를 서술한다"인데 그 서술이 한 번 더 눌러야 나오면, 첫 화면에서
@@ -20,19 +23,13 @@ export async function SidePanel() {
 
   return (
     <aside className="border-hairline flex flex-col gap-10 border-b px-6 pt-12 pb-12 sm:px-8 lg:sticky lg:top-0 lg:h-dvh lg:w-[340px] lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-b-0 lg:px-8 lg:pt-24 lg:pb-12">
-      <div className="space-y-4">
-        <div className="flex items-start justify-between gap-4">
-          <Link href="/" className="type-heading-sm tracking-[-0.4px]">
-            읽은 것을 남깁니다
-          </Link>
+      <div className="flex items-center justify-between gap-4">
+        {/* 워드마크. 저장소 이름이 곧 이 화면이 하는 말이라 다른 인삿말을 두지 않는다. */}
+        <Link href="/" className="type-card-title tracking-[0.14em] uppercase">
+          Interested
+        </Link>
 
-          <ThemeToggle />
-        </div>
-
-        <p className="type-body-sm text-slate">
-          유튜브·블로그·X에서 읽은 것 하나마다 Note를 한 편 씁니다. 요약이 아니라 거기서 무엇을
-          건졌는지를 적습니다.
-        </p>
+        <ThemeToggle />
       </div>
 
       <section className="space-y-4">
