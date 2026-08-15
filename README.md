@@ -65,6 +65,7 @@ Note 본문과 Portrait 문장 자체는 모델 호출이라 산문을 검증할
 | [ADR-0008](./docs/adr/0008-the-observers-prose-is-written-by-a-model.md) | 관찰자의 산문은 모델이 쓰고 감사가 막는다 |
 | [ADR-0009](./docs/adr/0009-the-note-carries-the-sources-outline.md) | Note는 원문의 뼈대를 싣는다 |
 | [ADR-0010](./docs/adr/0010-arc-separates-two-voices-by-quotation.md) | Arc는 두 목소리를 인용으로 나눈다 |
+| [ADR-0011](./docs/adr/0011-the-first-screen-is-a-note-feed.md) | 첫 화면은 Note 피드다 — ADR-0006을 뒤집었다 |
 
 관찰자가 `습득했다`고 말하지 않고 `관심이 있다`고만 말하는 이유는 ADR-0005에 있다. 읽었다는 사실에서 관심은 따라 나오지만 습득은 따라 나오지 않는다.
 
@@ -74,4 +75,4 @@ Note 형식이 고정됐고 그것을 지키는 Note가 두 편 있다. Concept�
 
 Portrait과 Arc는 Note나 Trail이 커밋될 때와 하루 한 번, 한 워크플로에서 차례로 돈다. Arc에는 씨앗이 놓였고 두 편의 Note가 항목 둘로 붙어 있다. 모델의 문장이 감사에 걸리면 조립으로 되돌아가므로 갱신이 멈추지는 않고, Portrait이 되돌아갔다는 사실은 파일의 `prose: template`에 남는다.
 
-웹은 Trail이 네 번 발행된 뒤에 만든다 — 실물 없이 설계하면 추측이 되므로.
+웹은 좌우로 나뉜다. 좌측은 인삿말과 Portrait·Arc 진입점이고 우측은 Note 피드이며, 카드를 누르면 전문으로 간다. 우측이 시간축인 것은 ADR-0006을 뒤집은 결정이고 그 이유는 [ADR-0011](./docs/adr/0011-the-first-screen-is-a-note-feed.md)에 있다. 컴포넌트는 shadcn/ui이고, 화면은 마크다운을 읽기만 한다 — `pnpm dev`로 본다.
