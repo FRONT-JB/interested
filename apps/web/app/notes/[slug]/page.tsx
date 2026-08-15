@@ -26,7 +26,11 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
   const { source, mine } = splitNoteVoices(body);
 
   return (
-    /* DESIGN.md — docs-prose-block: 본문 최대폭 720px */
+    /*
+      DESIGN.md — docs-prose-block: 본문 최대폭 720px. 이 폭 하나가 이 화면의
+      읽는 칸이고, 안에서 블록마다 폭을 따로 주지 않는다 — 폭이 여럿이면 블록의
+      오른쪽 끝이 저마다 달라 계단처럼 읽힌다.
+    */
     <article className="max-w-[720px]">
       <Link href="/" className="type-body-sm-medium text-steel hover:text-ink transition-colors">
         ← Notes

@@ -10,11 +10,11 @@ export default async function PortraitPage() {
     <article className="max-w-[720px]">
       <p className="type-label text-brand-coral">Portrait</p>
 
-      <h1 className="type-heading-lg mt-4 max-w-[20ch] text-balance">
+      <h1 className="type-heading-lg mt-4 text-balance">
         관찰자가 내놓는 짧은 판정
       </h1>
 
-      <div className="mt-5 max-w-[60ch] space-y-3">
+      <div className="mt-5 space-y-3">
         <p className="type-subtitle text-slate">
           쌓인 Note와 GitHub 공개 활동을 재료로 AI가 문장을 쓰고, 감사를 통과한 것만 파일이 됩니다.
         </p>
