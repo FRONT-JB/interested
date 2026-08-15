@@ -21,8 +21,8 @@ export default async function Home() {
   return (
     <div className="space-y-6">
       <header className="flex items-baseline gap-3">
-        <h1 className="type-caption-bold text-steel tracking-[0.08em] uppercase">Notes</h1>
-        <span className="type-caption text-stone">{notes.length}</span>
+        <h1 className="type-label text-steel">Notes</h1>
+        <span className="type-micro text-stone">{notes.length}</span>
       </header>
 
       <Feed notes={notes.map(({ slug, date, title, concepts }) => ({ slug, date, title, concepts }))} />

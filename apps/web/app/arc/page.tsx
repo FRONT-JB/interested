@@ -8,7 +8,7 @@ export default async function ArcPage() {
 
   return (
     <article className="max-w-[720px]">
-      <p className="type-caption-bold text-stone tracking-[0.12em] uppercase">Arc</p>
+      <p className="type-label text-stone">Arc</p>
 
       <h1 className="type-heading-lg mt-4 max-w-[22ch] text-balance">길어지기만 하는 하나의 서사</h1>
 

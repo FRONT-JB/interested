@@ -8,7 +8,7 @@ export default async function PortraitPage() {
 
   return (
     <article className="max-w-[720px]">
-      <p className="type-caption-bold text-brand-coral tracking-[0.12em] uppercase">Portrait</p>
+      <p className="type-label text-brand-coral">Portrait</p>
 
       <h1 className="type-heading-lg mt-4 max-w-[20ch] text-balance">
         관찰자가 내놓는 짧은 판정

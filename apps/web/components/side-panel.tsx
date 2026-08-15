@@ -72,7 +72,7 @@ export async function SidePanel() {
 /** 절의 이름. 칩에 담지 않고 글자만 둔다. */
 function SectionLabel({ children }: { children: string }) {
   return (
-    <h2 className="type-caption-bold text-stone tracking-[0.12em] uppercase">{children}</h2>
+    <h2 className="type-label text-stone">{children}</h2>
   );
 }
 

@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  */
 export function Markdown({ children, compact = false }: { children: string; compact?: boolean }) {
   return (
-    <div className={cn("text-charcoal", compact ? "type-caption space-y-2.5" : "type-body space-y-4")}>
+    <div className={cn("text-charcoal", compact ? "type-body-sm space-y-3" : "type-body space-y-4")}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

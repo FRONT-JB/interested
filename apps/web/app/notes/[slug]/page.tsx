@@ -42,7 +42,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
           본문보다 먼저 읽히도록 앞에 두고, `{colors.surface}` 판 위에 얹어 세운다.
         */}
         <div className="bg-surface space-y-2 rounded-xl px-5 py-4">
-          <span className="type-caption-bold text-brand-coral block">TAKE</span>
+          <span className="type-label text-brand-coral block">Take</span>
           <p className="type-subtitle text-ink text-pretty">{note.take}</p>
         </div>
 
@@ -83,9 +83,7 @@ export default async function NotePage({ params }: PageProps<"/notes/[slug]">) {
       */}
       {mine === "" ? null : (
         <section className="bg-surface mt-10 space-y-4 rounded-xl px-5 py-6 sm:px-7 sm:py-7">
-          <p className="type-caption-bold text-brand-coral tracking-[0.12em] uppercase">
-            내가 남긴 것
-          </p>
+          <p className="type-label text-brand-coral">내가 남긴 것</p>
 
           <Markdown>{mine}</Markdown>
         </section>
