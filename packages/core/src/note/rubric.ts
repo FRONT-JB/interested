@@ -199,12 +199,12 @@ function collectAskBacks(draft: NoteDraft): AskBack[] {
 
   // 관점이 얇다는 판정이 이미 붙었으면 균형은 다시 묻지 않는다. 같은 자리를
   // 두 문장으로 물으면 사람이 무엇을 고쳐야 하는지가 흐려진다.
-  if (askBack.length === 0 && !perspectiveHoldsMajority(draft)) {
+  if (askBack.length === 0 && !perspectiveKeepsBalance(draft)) {
     askBack.push({
       field: "harvest",
-      reason: "원문 정리가 관점보다 길다 — 본문의 대부분은 관점이어야 한다 (ADR-0009)",
+      reason: "원문 정리가 관점의 두 배를 넘는다 — 본문의 중심은 관점이어야 한다 (ADR-0009)",
       question:
-        "원문 요약이 관점보다 길어졌다. 요약을 줄이는 대신, 이 Source가 네 생각을 어디서 어떻게 움직였는지 더 짚어 달라.",
+        "원문 요약이 관점을 눌렀다. 요약을 줄이는 대신, 이 Source가 네 생각을 어디서 어떻게 움직였는지 더 짚어 달라.",
     });
   }
 
@@ -241,23 +241,34 @@ function addPerspectiveAskBack(
 const maximumOutlineChunks = 7;
 
 /**
- * 관점 세 자리의 합이 원문 쪽(도입부 + 정리)보다 길어야 본문의 대부분이
+ * 원문 쪽(도입부 + 정리)이 관점 세 자리의 두 배를 넘지 않아야 본문의 중심이
  * 관점이라고 본다. ADR-0009가 ADR-0003의 분량 제한을 푸는 대신 걸어 둔 조건이
  * 이것이라, 여기가 무너지면 Note가 번역 요약으로 읽히기 시작한다.
+ *
+ * 처음에는 관점이 원문 쪽보다 길 것을 요구했는데, 그 조건은 ADR-0009가 뼈대를
+ * 열 문장으로 늘리기 전의 것이었다. 뼈대가 상한까지 찬 Note는 원문 쪽만
+ * 700자를 넘겨서, 관점을 성실히 받아도 구조적으로 걸렸다. 상한이 늘어난 만큼
+ * 균형선도 옮긴다.
  *
  * 글자 수로 재는 것은 조악하다. 짧고 밀도 높은 관점이 걸릴 수 있고, 길게 늘여
  * 쓴 빈 말은 통과한다. 관점을 재는 다른 문턱들과 같은 한계이며, 최종 판단은
  * 이 함수가 아니라 스킬 대화에서 사람과 에이전트가 한다.
  */
-function perspectiveHoldsMajority(draft: NoteDraft): boolean {
+function perspectiveKeepsBalance(draft: NoteDraft): boolean {
   const perspective =
     compactLength(draft.harvest) + compactLength(draft.application) + compactLength(draft.doubt);
   const source =
     compactLength(draft.sourceClaim) +
     draft.sourceOutline.reduce((total, chunk) => total + compactLength(chunk), 0);
 
-  return perspective > source;
+  return perspective * maximumSourceMultiple >= source;
 }
+
+/**
+ * 원문 쪽이 관점의 몇 배까지 허용되는지. 뼈대가 열 문장 상한까지 찬 Note에서
+ * 관점 세 자리가 자리당 120자쯤이면 통과하는 선이다.
+ */
+const maximumSourceMultiple = 2;
 
 function compactLength(text: string): number {
   return text.replace(/\s+/gu, "").length;
