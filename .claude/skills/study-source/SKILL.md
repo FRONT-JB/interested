@@ -190,7 +190,7 @@ node .claude/skills/study-source/scripts/audit_briefing.mjs \
 | `take` | 6단계에서 확인받은 한 문장 |
 | `concepts` | 이 Note가 다루는 Concept. 1단계의 `vocabulary`를 먼저 보고 이미 있는 이름이면 그것을 쓴다 |
 | `sourceClaim` | 브리핑의 **원문의 주장** 세 문장 |
-| `sourceOutline` | 브리핑의 **원문이 한 말** 덩어리들. 라벨과 타임스탬프를 떼고 문장만 |
+| `sourceOutline` | 브리핑의 **원문이 한 말** 덩어리들. 라벨과 타임스탬프를 떼고 문장만. 두 문장짜리 덩어리는 한 문장으로 줄여 전체를 열 문장 안팎으로 맞춘다 (ADR-0009) |
 | `harvest` | 질문 1의 답 |
 | `application` | 질문 2의 답 |
 | `doubt` | 질문 3의 답 |
