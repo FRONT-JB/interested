@@ -1,0 +1,61 @@
+[
+  {
+    "name": "clean",
+    "source": "sources/cache-invalidation.txt",
+    "briefing": "briefings/clean.md",
+    "planted": []
+  },
+  {
+    "name": "overstated",
+    "source": "sources/cache-invalidation.txt",
+    "briefing": "briefings/overstated.md",
+    "planted": [
+      {
+        "id": "memory-any-team",
+        "anchor": "어느 팀에게든 감수할 만한 수준이라고 단언한다",
+        "why": "원문은 자기 판단이라고 밝히고 메모리가 빠듯한 팀은 다르게 볼 수 있다는 단서를 달았다. 브리핑이 그 단서를 떼고 단언으로 바꿨다."
+      }
+    ]
+  },
+  {
+    "name": "fabricated-number",
+    "source": "sources/typed-errors.txt",
+    "briefing": "briefings/fabricated-number.md",
+    "planted": [
+      {
+        "id": "deploy-15pct",
+        "anchor": "배포 속도가 15퍼센트 빨라졌다",
+        "why": "원문은 속도에 대한 수치가 없다고 명시하며 보일 수 없는 이득을 주장하지 않겠다고 했다."
+      }
+    ]
+  },
+  {
+    "name": "inverted",
+    "source": "sources/typed-errors.txt",
+    "briefing": "briefings/inverted.md",
+    "planted": [
+      {
+        "id": "bug-catching-win",
+        "anchor": "가장 큰 이득은 버그를 미리 잡는 데 있었고",
+        "why": "원문은 버그 예방 쪽은 기대만큼이 아니었고 값을 한 자리는 코드 리뷰였다고 말했다. 브리핑이 둘을 뒤집었다."
+      }
+    ]
+  },
+  {
+    "name": "outline-title",
+    "source": "sources/cache-invalidation.txt",
+    "briefing": "briefings/outline-title.md",
+    "planted": [
+      {
+        "id": "ttl-always-wrong",
+        "anchor": "TTL로 캐시를 다루는 것은 언제나 잘못된 선택이다",
+        "why": "덩어리 본문은 원문과 맞지만 제목이 원문에 없는 단정을 담았다. 원문은 TTL이 무효화를 미루는 장치였다고 했을 뿐이다."
+      },
+      {
+        "id": "version-key-answer",
+        "anchor": "버전 키가 이 문제의 정답으로 밝혀졌다",
+        "why": "원문은 장단점을 나란히 들고 팀에 따라 다르게 판단할 수 있다고 했다. 제목이 그것을 정답으로 굳혔다."
+      }
+    ]
+  }
+]

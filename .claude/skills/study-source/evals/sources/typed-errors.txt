@@ -1,0 +1,13 @@
+So, thanks for having me. I want to talk about error handling, and specifically about why I stopped throwing exceptions in most of our codebase.
+
+Let me start with where we were. We had a service layer, maybe forty modules, and every one of them threw. The problem wasn't that throwing is bad. The problem was that nothing in the type system told you what could come out. You'd call a function, you'd read its signature, and the signature said it returns a User. It did not say it might blow up with three different kinds of failure.
+
+So what we did, and this is not a new idea at all, is we moved to returning a result value. The function returns either an ok case with the value, or an error case with a tagged error. And now the signature tells you the whole story.
+
+Now, the honest part. This is more code. Every call site has to unwrap. In our case the diff was about eleven thousand lines added across the migration, and a lot of that is pure ceremony. If somebody tells you this approach is free, they haven't done it on a real codebase.
+
+The place where it paid off was not where I expected. I thought the win would be in catching bugs. It wasn't, really. The win was in code review. When somebody adds a new failure mode to a function, the type changes, and every caller shows up in the diff. Reviewers see the blast radius without anybody having to remember to look for it.
+
+I'll also say what we did not do. We did not migrate the whole codebase. The HTTP layer still throws, because the framework wants exceptions and fighting it was not worth it. The database driver still throws. We drew the line at our own service modules, and I think drawing a line somewhere is more important than which line you draw.
+
+One more thing before questions. People ask whether this made us faster. I don't have numbers on that. It did not make us slower in any way I could measure, but I want to be careful not to claim a benefit I can't show you.
