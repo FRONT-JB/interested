@@ -1,6 +1,6 @@
 ---
-covered: notes/2026-08-15-deferred-processing-llm-knowledge-base.md
-notes: 2
+covered: notes/2026-08-16-agent-harness-evaluation.md
+notes: 3
 ---
 
 # Arc
@@ -20,3 +20,5 @@ notes: 2
 2026-07-08 · `parameter-object-pattern`, `stamp-coupling`, `query-object`가 처음 나왔다.
 
 2026-08-15 · `deferred-processing`, `llm-knowledge-base`, `memory-tiering`가 모두 처음 나왔다.
+
+2026-08-16 · 저장소의 3번째 Note에서 처음 나온 이름은 `agent-harness`, `harness-evaluation`, `in-distribution`이다.
