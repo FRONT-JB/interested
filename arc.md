@@ -1,6 +1,6 @@
 ---
-covered: notes/2026-08-16-agent-harness-evaluation.md
-notes: 3
+covered: notes/2026-08-17-forward-deployed-engineering.md
+notes: 4
 ---
 
 # Arc
@@ -22,3 +22,5 @@ notes: 3
 2026-08-15 · `deferred-processing`, `llm-knowledge-base`, `memory-tiering`가 모두 처음 나왔다.
 
 2026-08-16 · 저장소의 3번째 Note에서 처음 나온 이름은 `agent-harness`, `harness-evaluation`, `in-distribution`이다.
+
+2026-08-17 · 이 저장소의 4번째 Note에서 `forward-deployed-engineering`, `shared-primitives`, `single-source-of-truth`라는 이름이 처음 나왔다.
