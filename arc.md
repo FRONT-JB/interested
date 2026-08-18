@@ -1,6 +1,6 @@
 ---
-covered: notes/2026-08-17-forward-deployed-engineering.md
-notes: 4
+covered: notes/2026-08-18-event-sourcing-agent-harness.md
+notes: 5
 ---
 
 # Arc
@@ -24,3 +24,5 @@ notes: 4
 2026-08-16 · 저장소의 3번째 Note에서 처음 나온 이름은 `agent-harness`, `harness-evaluation`, `in-distribution`이다.
 
 2026-08-17 · 이 저장소의 4번째 Note에서 `forward-deployed-engineering`, `shared-primitives`, `single-source-of-truth`라는 이름이 처음 나왔다.
+
+2026-08-18 · `event-sourcing`이 처음 나왔고, `agent-harness`와 `harness-evaluation`은 2026-08-16 이후 1주 만에 돌아왔으며 `single-source-of-truth`는 2026-08-17 이후 같은 주에 다시 나왔다.
