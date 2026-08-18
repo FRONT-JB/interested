@@ -6,3 +6,6 @@ __pycache__/
 
 # 스킬 개발용 작업물 — eval 산출물과 원문 사본이라 정본이 아니다
 .claude/skills/*-workspace/
+
+# 브라우저 도구가 남긴 콘솔 로그 — 실행 흔적이지 산출물이 아니다
+.playwright-mcp/
