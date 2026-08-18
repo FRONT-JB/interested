@@ -1,14 +1,14 @@
 ---
-facts: b9451e79e615
+facts: f344718ad770
 prose: model
 ---
 
 # Portrait
 
-지금 붙들려 있는 건 `single-source-of-truth`다. 2026-W34 한 주에 Note가 가장 몰렸고, 마지막 Note는 2026-08-18에 쓰였다.
+지금은 `single-source-of-truth`에 몰려 있다. 2026-W34 한 주 동안 이 개념이 가장 많이 나타났고, 마지막 Note는 2026-08-18에 쓰였다.
 
-누적으로 보면 `agent-harness` 2편과 `harness-evaluation` 2편이 `single-source-of-truth` 2편과 나란하고, 그 뒤로 `deferred-processing`, `event-sourcing`, `forward-deployed-engineering`, `in-distribution`, `llm-knowledge-base`, `memory-tiering`, `parameter-object-pattern`, `query-object`, `shared-primitives`, `stamp-coupling`이 각 1편씩 흩어져 있다. 5편이 3주에 걸쳐 쓰였고, `single-source-of-truth`는 연속 1주로 나타난다.
+누적으로 보면 `agent-harness`와 `harness-evaluation`이 각 2편, `single-source-of-truth`도 2편으로 나란하고, 나머지 `deferred-processing`, `event-sourcing`, `forward-deployed-engineering`, `in-distribution`, `llm-knowledge-base`, `memory-tiering`, `parameter-object-pattern`, `query-object`, `shared-primitives`, `stamp-coupling`은 각 1편씩 흩어져 있다. `single-source-of-truth`는 연속된 주로는 1주뿐이다.
 
-같은 기간이 아닌 2026-08-12부터 2026-08-18까지는 공개 푸시가 15회 있었고, 그 중 13회가 `FRONT-JB/interested`로, 2회가 `claude-studio/built`로 갔다. `FRONT-JB/interested`의 주 언어는 `TypeScript`이고 `claude-studio/built`의 주 언어는 `JavaScript`다.
+같은 기간이 아닌 2026-08-12부터 2026-08-18까지는 공개 푸시가 21회 있었고, 그중 15회가 `FRONT-JB/interested`로 갔다. 이 저장소의 주 언어는 `TypeScript`다.
 
-Note에서 몰린 이름과 푸시가 몰린 곳의 이름은 다르다 — 하나는 `single-source-of-truth`이고 다른 하나는 `FRONT-JB/interested`다.
+Note가 가리키는 이름과 푸시가 몰린 저장소의 이름은 겹치지 않는다. `single-source-of-truth`라는 이름은 `FRONT-JB/interested`에도, 나머지 푸시처가 간 `FRONT-JB/FRONT-JB`나 `claude-studio/built`에도 등장하지 않는다.
