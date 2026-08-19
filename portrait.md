@@ -1,14 +1,35 @@
 ---
-facts: f344718ad770
-prose: model
+facts: d420e7a2b95a
+prose: template
 ---
 
 # Portrait
 
-지금은 `single-source-of-truth`에 몰려 있다. 2026-W34 한 주 동안 이 개념이 가장 많이 나타났고, 마지막 Note는 2026-08-18에 쓰였다.
+`single-source-of-truth`에 관심이 있다. 1주 연속 나타났다.
 
-누적으로 보면 `agent-harness`와 `harness-evaluation`이 각 2편, `single-source-of-truth`도 2편으로 나란하고, 나머지 `deferred-processing`, `event-sourcing`, `forward-deployed-engineering`, `in-distribution`, `llm-knowledge-base`, `memory-tiering`, `parameter-object-pattern`, `query-object`, `shared-primitives`, `stamp-coupling`은 각 1편씩 흩어져 있다. `single-source-of-truth`는 연속된 주로는 1주뿐이다.
+가장 최근에 Note를 쓴 주는 2026-W34이다. Note는 지금까지 5편이고 3주에 걸쳐 썼다. 마지막 Note는 2026-08-18에 썼다.
 
-같은 기간이 아닌 2026-08-12부터 2026-08-18까지는 공개 푸시가 21회 있었고, 그중 15회가 `FRONT-JB/interested`로 갔다. 이 저장소의 주 언어는 `TypeScript`다.
+## 관심
 
-Note가 가리키는 이름과 푸시가 몰린 저장소의 이름은 겹치지 않는다. `single-source-of-truth`라는 이름은 `FRONT-JB/interested`에도, 나머지 푸시처가 간 `FRONT-JB/FRONT-JB`나 `claude-studio/built`에도 등장하지 않는다.
+- `agent-harness` 2편
+- `harness-evaluation` 2편
+- `single-source-of-truth` 2편
+- `deferred-processing` 1편
+- `event-sourcing` 1편
+- `forward-deployed-engineering` 1편
+- `in-distribution` 1편
+- `llm-knowledge-base` 1편
+- 그 밖에 5개
+
+## 행동
+
+2026-08-13부터 2026-08-19까지 공개 푸시 22회.
+
+- `FRONT-JB/interested` 15회 — 주 언어 `TypeScript`
+- `FRONT-JB/FRONT-JB` 4회
+- `FRONT-JB/mcx` 2회 — 주 언어 `Python`
+- `claude-studio/built` 1회
+
+## 대비
+
+- 관심이 몰린 곳은 `single-source-of-truth`, 푸시가 몰린 곳은 `FRONT-JB/interested` 15회. 그 저장소의 주 언어는 `TypeScript`.
