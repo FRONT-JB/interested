@@ -1,5 +1,5 @@
 ---
-facts: d420e7a2b95a
+facts: f1ad9cb587e9
 prose: template
 ---
 
@@ -23,13 +23,12 @@ prose: template
 
 ## 행동
 
-2026-08-13부터 2026-08-19까지 공개 푸시 22회.
+2026-08-14부터 2026-08-20까지 공개 푸시 16회.
 
-- `FRONT-JB/interested` 15회 — 주 언어 `TypeScript`
-- `FRONT-JB/FRONT-JB` 4회
-- `FRONT-JB/mcx` 2회 — 주 언어 `Python`
-- `claude-studio/built` 1회
+- `claude-studio/geness` 12회
+- `FRONT-JB/FRONT-JB` 3회
+- `claude-studio/built` 1회 — 주 언어 `JavaScript`
 
 ## 대비
 
-- 관심이 몰린 곳은 `single-source-of-truth`, 푸시가 몰린 곳은 `FRONT-JB/interested` 15회. 그 저장소의 주 언어는 `TypeScript`.
+- 관심이 몰린 곳은 `single-source-of-truth`, 푸시가 몰린 곳은 `claude-studio/geness` 12회.
